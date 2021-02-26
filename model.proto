@@ -1,0 +1,19 @@
+//Define the used version of proto
+syntax = "proto3";
+
+package aqpredictions;
+
+//Define a message to hold the features input by the client
+message AQPredictRequest {
+    float current_pm10 = 1 ;
+}
+//Define a message to hold the response output
+message AQPredictResponse {
+    string predicted_aq_level = 1 ;
+}
+
+
+//Define the service
+service AI4IoT {
+  rpc predict_aq_level(AQPredictRequest) returns (AQPredictResponse);
+}
