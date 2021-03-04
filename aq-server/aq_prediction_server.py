@@ -8,7 +8,7 @@ import model_pb2
 import model_pb2_grpc
 
 import joblib
-model_filepath = 'trained_model/classification_only_pm'
+model_filepath = 'models/classification_only_pm.pkl'
 
 port = 8061
 # create a class to define the server functions, derived from
@@ -37,7 +37,7 @@ class AI4IoTServicer(model_pb2_grpc.AI4IoTServicer):
         
         return response
 
-    # create a grpc server :
+# create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
 model_pb2_grpc.add_AI4IoTServicer_to_server(AI4IoTServicer(), server)
