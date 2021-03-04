@@ -9,6 +9,8 @@ COPY ./requirements.txt /requirements.txt
 
 COPY model.proto aq_prediction_server.py ./
 
+COPY trained_model/classification_only_pm ./trained_model/classification_only_pm
+
 WORKDIR /
 
 RUN pip3 install -r requirements.txt

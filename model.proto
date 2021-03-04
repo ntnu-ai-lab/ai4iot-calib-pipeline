@@ -5,7 +5,12 @@ package aqpredictions;
 
 //Define a message to hold the features input by the client
 message AQPredictRequest {
-    float current_pm10 = 1 ;
+    float e6_tiller_pm25 = 1 ;
+    float e6_tiller_pm10 = 2 ;
+    float elgeseter_pm25 = 3 ;
+    float elgeseter_pm10 = 4 ;
+    float torvet_pm25 = 5 ;
+    float torvet_pm10 = 6 ;
 }
 //Define a message to hold the response output
 message AQPredictResponse {

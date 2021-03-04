@@ -7,25 +7,33 @@ import grpc
 import model_pb2
 import model_pb2_grpc
 
-# import the function we made :
+import joblib
+model_filepath = 'trained_model/classification_only_pm'
+
 port = 8061
 # create a class to define the server functions, derived from
 
 class AI4IoTServicer(model_pb2_grpc.AI4IoTServicer):
     manager = None
 
+    #Load RF classifier
+    trained_model = joblib.load(model_filepath)
+
     def predict_aq_level(self, request, context):
               
         response = model_pb2.AQPredictResponse()
-              
-        if(request.current_pm10 < 30):
+
+        predicted_aq = self.trained_model.predict([[request.e6_tiller_pm10,
+                                request.e6_tiller_pm25,
+                                request.elgeseter_pm10,
+                                request.elgeseter_pm25,
+                                request.torvet_pm10,
+                                request.torvet_pm25]])
+
+        if predicted_aq == 0:
             response.predicted_aq_level = 'LOW'
-        elif(30 <= request.current_pm10 < 50):
-            response.predicted_aq_level = 'MEDIUM'
-        elif(50 <= request.current_pm10 < 150):
+        elif predicted_aq == 1:
             response.predicted_aq_level = 'HIGH'
-        elif(150 <= request.current_pm10):
-            response.predicted_aq_level = 'VERY HIGH'
         
         return response
 
