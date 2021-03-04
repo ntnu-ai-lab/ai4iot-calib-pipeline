@@ -17,3 +17,5 @@ Before running the client, it is needed to copy the protobuf message definitions
 
 Finally, the client script can be run. It will fetch the last observations from NILU, communicate with the server and return the predicted AQ level, which is printed in the shell by the client script.
 `./run-client.sh`
+
+**Note**: the client needs protobuf and grpcio-tools packages installed.
