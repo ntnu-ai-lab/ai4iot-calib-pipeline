@@ -1,1 +1,1 @@
-python3 aq_client_predict
+python3 aq_client_predict.py
