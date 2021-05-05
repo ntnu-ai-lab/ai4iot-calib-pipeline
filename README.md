@@ -1,7 +1,8 @@
-# aq-prediction-acumos
+# ai4iot-acumos
 
-This repository implements a simple air quality predictions server, using the Acumos infrastructure from the AI4EU platform.
-It includes a training and predicting services. The former receives some parameters as input (check model.proto in aq-server folder, TODO: describe here all the parameters) and trains a random forest classifier to predict whether the target will be over the threshold in the next 24 hours. The prediction service receives a sample of the features with which the classifier was trained and predicts the pollution level for the next 24 hours.
+This repository contains modules from the AI4IoT pilot that are intended to use the Acumos infrastructure from the AI4EU platform.
+
+Currently it holds a simple air quality predictions server. It includes a training and predicting services. The former receives some parameters as input (check model.proto in aq-server folder, TODO: describe here all the parameters) and trains a random forest classifier to predict whether the target will be over the threshold in the next 24 hours. The prediction service receives a sample of the features with which the classifier was trained and predicts the pollution level for the next 24 hours.
 
 # Running
 ## 1) Run the server
