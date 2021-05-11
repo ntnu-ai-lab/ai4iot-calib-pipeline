@@ -7,15 +7,16 @@ import grpc
 import model_pb2
 import model_pb2_grpc
 
-from classifier_manager import ClassifierManager
+#Is this needed?
+from calibration_manager import CalibrationManager
 
 port = 8061
 # create a class to define the server functions, derived from
 
-class AI4IoTServicer(model_pb2_grpc.AI4IoTServicer):
-    manager = ClassifierManager()
+class CalibrationServicer(model_pb2_grpc.AI4IoTServicer):
+    manager = CalibrationManager()
 
-    def train_classifier(self, request, context):
+    def calibration_train(self, request, context):
 
         train_params = {'station': request.station,
                         'pollutant': request.pollutant,
@@ -36,7 +37,7 @@ class AI4IoTServicer(model_pb2_grpc.AI4IoTServicer):
         return response
         
 
-    def predict_aq_level(self, request, context):
+    def calibration_predict(self, request, context):
 
         sample = {'e6_tiller_pm10':request.e6_tiller_pm10,
                   'e6_tiller_pm25':request.e6_tiller_pm25,

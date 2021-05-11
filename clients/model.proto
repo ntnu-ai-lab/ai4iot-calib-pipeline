@@ -42,6 +42,7 @@ message AQPredictResponse {
 
 
 //Define the service
+// TODO: change service name for something more concrete? (e.g., Predict) to distuinguish from other modules in the pipeline
 service AI4IoT {
   rpc train_classifier(AQTrainRequest) returns (AQTrainResponse);
   rpc predict_aq_level(AQPredictRequest) returns (AQPredictResponse);
