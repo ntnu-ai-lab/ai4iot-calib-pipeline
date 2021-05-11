@@ -1,19 +1,25 @@
 # aq-prediction-acumos
 
-This repository implements a simple air quality predictions server, using the Acumos infrastructure from the AI4EU platform.
-It includes a training and predicting services. The former receives some parameters as input (check model.proto in aq-server folder, TODO: describe here all the parameters) and trains a random forest classifier to predict whether the target will be over the threshold in the next 24 hours. The prediction service receives a sample of the features with which the classifier was trained and predicts the pollution level for the next 24 hours.
+This repository implements modules towards the pipeline for the AI4IoT pilot, using the Acumos infrastructure from the AI4EU platform.
+Currently, there are two modules: prediction and calibration.
 
-# Running
-## 1) Run the server
+# Calibration
+Work in progress, to be updated.
+
+# Prediction
+It includes a training and predicting services. The former receives some parameters as input (check model.proto in prediction folder, TODO: describe here all the parameters) and trains a random forest classifier to predict whether the target will be over the threshold in the next 24 hours. The prediction service receives a sample of the features with which the classifier was trained and predicts the pollution level for the next 24 hours.
+
+## Running
+### 1) Run the server
 First, the docker container needs to be built.
-`cd aq-server && ./docker-build.sh`
+`cd prediction && ./docker-build.sh`
 
 Then, we can launch the service
 `./docker-run.sh`
 
-## 2) Run the client
+### 2) Run the client
 Before running the client, it is needed to copy the protobuf message definitions to its folder and compile locally (the client needs to be aware of the message types)
-`cd ../aq-client && ./populate_and_rebuild_protobuf.sh`
+`cd ../clients && ./populate_and_rebuild_protobuf.sh`
 
 Finally, the client scripts can be run. First, the model needs to be trained, so there is a script to call the training service. Input parameters are currently defined inside the python script `aq_train_client-py`. The service returns metrics on the model performance, which are printed by the client script.
 `./run-train-client.sh`
