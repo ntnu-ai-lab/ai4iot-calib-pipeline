@@ -13,29 +13,19 @@ from calibration_manager import CalibrationManager
 port = 8061
 # create a class to define the server functions, derived from
 
-class CalibrationServicer(model_pb2_grpc.AI4IoTServicer):
+class CalibrationServicer(model_pb2_grpc.CalibrationServicer):
     manager = CalibrationManager()
 
     def calibration_train(self, request, context):
 
         train_params = {'station': request.station,
-                        'pollutant': request.pollutant,
-                        'threshold': request.threshold,
-                        'use_temporal': request.use_temporal,
-                        'use_delta': request.use_delta,
-                        'use_only_pm': request.use_only_pm,
-                        'use_weather': request.use_weather,
-                        'use_forecast': request.use_forecast,
-                        'use_traffic': request.use_traffic}
+                        'pollutant': request.pollutant}
         
         results = self.manager.train(train_params)
         
-        response = model_pb2.AQTrainResponse(test_recall=results['recall'],
-                                             test_precision=results['precision'],
-                                             test_roc=results['roc'])
+        response = model_pb2.AQTrainResponse(test_rmse=results['rmse_test'])
 
         return response
-        
 
     def calibration_predict(self, request, context):
 
@@ -60,7 +50,7 @@ class CalibrationServicer(model_pb2_grpc.AI4IoTServicer):
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-model_pb2_grpc.add_AI4IoTServicer_to_server(AI4IoTServicer(), server)
+model_pb2_grpc.add_CalibrationServicer_to_server(CalibrationServicer(), server)
 
 print("Starting server. Listening on port : " + str(port))
 server.add_insecure_port("[::]:{}".format(port))
