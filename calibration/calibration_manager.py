@@ -57,7 +57,7 @@ class CalibrationManager():
 
     def train(self, params):
         # station used for training
-        station = params['train_sensor']
+        station = params['station']
         # pollutant to predict
         pollutant = params['pollutant']
 
@@ -134,18 +134,18 @@ class CalibrationManager():
 
         print("Training..")
         train_target = train_target.squeeze()
-        rf = RandomForestRegressor(n_estimators=trees, max_depth=depth, max_features=max_feat)
-        rf.fit(train, train_target)
+        self.model = RandomForestRegressor(n_estimators=trees, max_depth=depth, max_features=max_feat)
+        self.model.fit(train, train_target)
         result_train = train_target.to_frame()
 
-        predictions_train = rf.predict(train)
+        predictions_train = self.model.predict(train)
         result_train = result_train.rename(columns={result_train.columns[0]: 'target'})
         result_train['prediction'] = predictions_train
         ms_error_train = mse(result_train['target'], result_train['prediction'])
         rmse_train = math.sqrt(ms_error_train)
         r2_train = r2(result_train['target'], result_train['prediction'])
 
-        predictions_test = rf.predict(test)
+        predictions_test = self.model.predict(test)
         result_test = test_target  # .to_frame()
         result_test = result_test.rename(columns={result_test.columns[0]: 'target'})
         result_test['prediction'] = predictions_test
@@ -156,7 +156,7 @@ class CalibrationManager():
         start_cut = 0
         end_cut = 1
         df_other = df_other[int(start_cut * len(df_other)): int(end_cut * len(df_other))]
-        predictions_other = rf.predict(df_other)
+        predictions_other = self.model.predict(df_other)
         result_other = target_other
         result_other = result_other[int(start_cut * len(result_other)): int(end_cut * len(result_other))]
         result_other = result_other.rename(columns={result_other.columns[0]: 'target'})
@@ -165,8 +165,19 @@ class CalibrationManager():
         rmse_other = math.sqrt(ms_error_other)
         r2_other = r2(result_other['target'], result_other['prediction'])
 
-        return rmse_test
+        results = {'rmse': rmse_test}
+        return results
 
     def predict(self):
 
         return
+
+
+if __name__ == '__main__':
+    train_params = {'station': 'elgeseter',
+                    'pollutant': 'pm25'}
+    calibration_manager = CalibrationManager()
+    rmse_test = calibration_manager.train(train_params)
+    print(rmse_test)
+
+

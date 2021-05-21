@@ -25,7 +25,7 @@ class CalibrationServicer(model_pb2_grpc.CalibrationServicer):
 
         results = self.manager.train(train_params)
 
-        response = model_pb2.CalibTrainResponse(test_rmse=results['rmse_test'])
+        response = model_pb2.CalibTrainResponse(rmse=results['rmse'])
 
         return response
 

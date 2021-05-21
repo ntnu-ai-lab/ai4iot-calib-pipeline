@@ -20,8 +20,7 @@ request = calibration_model_pb2.CalibTrainRequest(station='elgeseter',
 
 ####First, train the model (for now, this is just loading the pre-trained)
 response = stub.calibration_train(request)
-print('this is what i get back: ', response)
-print(type(response))
 
 print('Trained classifier:')
+print('Test RMSE: ', response.rmse)
 # print('rmse = %.2f, r2 score = %.2f' % (response.test_rmse, response.test_r2))
