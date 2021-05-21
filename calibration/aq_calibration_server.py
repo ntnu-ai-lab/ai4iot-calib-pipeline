@@ -7,10 +7,12 @@ import grpc
 import model_pb2
 import model_pb2_grpc
 
-#Is this needed?
+# Is this needed?
 from calibration_manager import CalibrationManager
 
 port = 8061
+
+
 # create a class to define the server functions, derived from
 
 class CalibrationServicer(model_pb2_grpc.CalibrationServicer):
@@ -20,32 +22,33 @@ class CalibrationServicer(model_pb2_grpc.CalibrationServicer):
 
         train_params = {'station': request.station,
                         'pollutant': request.pollutant}
-        
+
         results = self.manager.train(train_params)
-        
-        response = model_pb2.AQTrainResponse(test_rmse=results['rmse_test'])
+
+        response = model_pb2.CalibTrainResponse(test_rmse=results['rmse_test'])
 
         return response
 
     def calibration_predict(self, request, context):
 
-        sample = {'e6_tiller_pm10':request.e6_tiller_pm10,
-                  'e6_tiller_pm25':request.e6_tiller_pm25,
-                  'elgeseter_pm10':request.elgeseter_pm10,
-                  'elgeseter_pm25':request.elgeseter_pm25,
-                  'torvet_pm10':request.torvet_pm10,
-                  'torvet_pm25':request.torvet_pm25}
-                                
+        sample = {'e6_tiller_pm10': request.e6_tiller_pm10,
+                  'e6_tiller_pm25': request.e6_tiller_pm25,
+                  'elgeseter_pm10': request.elgeseter_pm10,
+                  'elgeseter_pm25': request.elgeseter_pm25,
+                  'torvet_pm10': request.torvet_pm10,
+                  'torvet_pm25': request.torvet_pm25}
+
         predicted_aq = self.manager.predict(sample)
 
-        response = model_pb2.AQPredictResponse()
-        
+        response = model_pb2.CalibPredictResponse()
+
         if predicted_aq == 0:
             response.predicted_aq_level = 'LOW'
         elif predicted_aq == 1:
             response.predicted_aq_level = 'HIGH'
-        
+
         return response
+
 
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

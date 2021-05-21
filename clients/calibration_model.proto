@@ -32,7 +32,7 @@ message DataRow {
 }
 
 message InputData {
-  repeated DataRow rows = 1; 
+  repeated DataRow rows = 1;
 }
 
 // Request message must include: 1) the dataset; 2) the name of the sensor to use as target; 3) the pollutant (PM2.5 or PM10)
