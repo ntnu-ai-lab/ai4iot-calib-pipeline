@@ -1,5 +1,4 @@
 # GRPC Python setup requirements
 protobuf>=3.5.0.post1
 grpcio-tools
-scikit-learn
-pandas
+scikit-learn==0.23.2
