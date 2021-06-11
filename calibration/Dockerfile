@@ -17,4 +17,8 @@ RUN pip3 install -r requirements.txt
 
 RUN python3 -m grpc_tools.protoc --python_out=. --proto_path=. --grpc_python_out=. calibration.proto
 
+RUN useradd calib_user
+
+USER calib_user
+
 ENTRYPOINT [ "python3","calibration_server.py" ]

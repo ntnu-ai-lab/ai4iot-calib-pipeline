@@ -139,12 +139,12 @@ def main():
 
     client_manager = ClientManager(config)
 
-    schedule.every().hour.at(":05").do(update_calib, manager=client_manager)
+    schedule.every().hour.at(":15").do(update_calib, manager=client_manager)
     # schedule.every(1).minutes.do(update_calib, manager=client_manager)
 
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(5)
 
 
 main()
