@@ -1,1 +1,1 @@
-docker build -t ai4iot_cal .
+docker build -t ai4iot_calibration .

@@ -37,7 +37,10 @@ class ClientIot():
 
     def fetch_last_data(self, device, elements, mask=None):
 
-        current_time = round(time.time()*1000)
+        current_time = round(time.time() * 1000)
+
+        end_time = current_time - (current_time % (3600 * 1000))
+        start_time = end_time - 1 * 60 * 60 * 1000
 
         # Fetch data for the previous hours. With the Span API this is done by defining start and end times.
         # Values must be in milisecond since epoch.
@@ -45,17 +48,17 @@ class ClientIot():
 
         resp = self._request('GET',
                                '/collections/17dh0cf43jg007/devices/{0}/data'.format(device),
-                               params={"start": current_time-1*60*60*1000,
-                                       "end": current_time})
+                               params={"start": start_time,
+                                       "end": end_time})
 
         data = {}
         for el in elements:
             data[el] = np.zeros(len(resp['data']))
-        
+
         for i in range(len(resp['data'])):
             self.read_aq.ParseFromString(base64.b64decode(resp['data'][i]['payload']))
             msg = MessageToDict(self.read_aq, preserving_proto_field_name=True)
-           
+
             for el in elements:
                 data[el][i] = msg[el]
 
