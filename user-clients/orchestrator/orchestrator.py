@@ -1,5 +1,5 @@
-import client_pb2
-import client_pb2_grpc
+import data_source_pb2
+import data_source_pb2_grpc
 import calibration_pb2
 import calibration_pb2_grpc
 
@@ -51,7 +51,7 @@ def readConfig(filepath):
 
 
 def update_data():
-    data = data_client_stub.get_last_data(google.protobuf.empty_pb2.Empty())
+    data = data_source_stub.request_update(google.protobuf.empty_pb2.Empty())
 
     calib_data = calibration_stub.calibrate_sample(data)
 
@@ -76,15 +76,15 @@ def update_data():
 
 ##################################################################
 # open a gRPC channel for data client
-data_client_channel = grpc.insecure_channel("localhost:8060")
-data_client_stub = client_pb2_grpc.DataClientStub(data_client_channel)
+data_source_channel = grpc.insecure_channel("localhost:8060")
+data_source_stub = data_source_pb2_grpc.AQDataSourceStub(data_source_channel)
 
 # open a gRPC channel for calibration server
 calibration_channel = grpc.insecure_channel("localhost:8061")
 calibration_stub = calibration_pb2_grpc.CalibrationStub(calibration_channel)
 
 # Build the request message
-request = client_pb2.ClientInitRequest()
+request = data_source_pb2.InitRequest()
 
 # A config file is requested for personal data (for instance, tokens for APIs).
 # Currently, the code reads from the ~/.aqdata (i.e., the file .aqdata is in the home directoy).
@@ -97,11 +97,11 @@ request.iot_token = config['iot_token']
 request.met_id = config['met_id']
 
 try:
-    data_client_stub.init_client(request)
+    data_source_stub.initialize(request)
 
     # Implements a scheduler to update the data at a fixed frequency.
     # Smaller periods are implemented for testing, the final deployment should update every hour. For instance, at the minute 15 every hour to allow every API to update its data.
-    schedule.every(30).seconds.do(update_data)
+    schedule.every(10).seconds.do(update_data)
     # schedule.every().hour.at(":05").do(update_data)
 
     while True:

@@ -51,7 +51,7 @@ def readConfig(filepath):
     return config
 
 
-class ClientManager():
+class DataSourceManager():
     def __init__(self, config):
         self.config = config
         ## Create api clients
@@ -111,7 +111,7 @@ def update_calib(manager):
     calib_pm25, calib_pm10 = manager.request_calib_service(data)
 
     #####################################
-    ## Print info
+    # Print info
 
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
@@ -137,10 +137,10 @@ def update_calib(manager):
 def main():
     config = readConfig(getFullPath('.aqdata'))
 
-    client_manager = ClientManager(config)
+    client_manager = DataSourceManager(config)
 
-    schedule.every().hour.at(":05").do(update_calib, manager=client_manager)
-    # schedule.every(1).minutes.do(update_calib, manager=client_manager)
+    schedule.every(5).seconds.do(update_calib, manager=client_manager)
+    # schedule.every().hour.at(":05").do(update_calib, manager=client_manager)
 
     while True:
         schedule.run_pending()

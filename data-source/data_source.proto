@@ -2,7 +2,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-package data_client;
+package aq_data_source;
 
 // This data type includes all the fields for microsensor and meteorological data. Note: is synchronized with the same message type in the calibration service.
 // TODO: add more fields when needed
@@ -20,7 +20,7 @@ message DataSample {
 }
 
 // Personal data to initialize the communication with data APIs
-message ClientInitRequest {
+message InitRequest {
   string iot_api = 1;
   string iot_token = 2;
   string met_id = 3;
@@ -29,7 +29,7 @@ message ClientInitRequest {
 // Two services are implemented at the data client server:
 // - The initialization service with the purpose of letting the user to input his personal tokens/ids for APIs which need those.
 // - A data fetching service which retrieves the last data available from the APIs
-service DataClient {
-  rpc init_client(ClientInitRequest) returns (google.protobuf.Empty);
-  rpc get_last_data(google.protobuf.Empty) returns (DataSample);
+service AQDataSource {
+  rpc initialize(InitRequest) returns (google.protobuf.Empty);
+  rpc request_update(google.protobuf.Empty) returns (DataSample);
 }

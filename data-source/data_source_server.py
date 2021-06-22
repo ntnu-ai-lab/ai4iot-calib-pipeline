@@ -4,34 +4,34 @@ from concurrent import futures
 import grpc
 
 # import the generated classes :
-import client_pb2
-import client_pb2_grpc
+import data_source_pb2
+import data_source_pb2_grpc
 
 import google.protobuf.empty_pb2
 
-from client_manager import DataClientManager
+from data_source_manager import DataSourceManager
 
 port = 8060
 
 
-class DataClientServicer(client_pb2_grpc.DataClientServicer):
+class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
 
-    def init_client(self, request, context):
+    def initialize(self, request, context):
         config = {'iot_api': request.iot_api,
                   'iot_token': request.iot_token,
                   'met_id': request.met_id}
 
-        self.manager = DataClientManager(config)
+        self.manager = DataSourceManager(config)
 
         response = google.protobuf.empty_pb2.Empty()
 
         return response
 
-    def get_last_data(self, request, context):
+    def request_update(self, request, context):
 
         data = self.manager.collect_sample()
 
-        response = client_pb2.DataSample()
+        response = data_source_pb2.DataSample()
 
         response.pm1 = data['pm1_iot']
         response.pm25 = data['pm25_iot']
@@ -49,7 +49,7 @@ class DataClientServicer(client_pb2_grpc.DataClientServicer):
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-client_pb2_grpc.add_DataClientServicer_to_server(DataClientServicer(), server)
+data_source_pb2_grpc.add_AQDataSourceServicer_to_server(DataSourceServicer(), server)
 
 print("Starting server. Listening on port : " + str(port))
 server.add_insecure_port("[::]:{}".format(port))
