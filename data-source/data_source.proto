@@ -21,7 +21,6 @@ message DataSample {
 
 // Personal data to initialize the communication with data APIs
 message InitRequest {
-  string iot_api = 1;
   string iot_token = 2;
   string met_id = 3;
 }

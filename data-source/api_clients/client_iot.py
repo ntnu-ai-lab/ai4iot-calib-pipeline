@@ -22,7 +22,7 @@ class ClientIot():
     def __init__(self, addr=None, token=None):
         # if addr is None or token is None:
         #    addr, token = addressTokenFromConfig(CONFIG_FILE)
-        self.addr = addr
+        self.addr = 'https://api.lab5e.com/span'
         self.token = token
         self.ping()
 

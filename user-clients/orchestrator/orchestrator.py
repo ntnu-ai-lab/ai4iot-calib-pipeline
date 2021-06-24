@@ -92,7 +92,6 @@ request = data_source_pb2.InitRequest()
 config = readConfig(getFullPath('.aqdata'))
 
 # Currently, only two APIs need a personal account (Lab5e's Span for the microsensor and MET for meteorological data)
-request.iot_api = config['iot_api']
 request.iot_token = config['iot_token']
 request.met_id = config['met_id']
 

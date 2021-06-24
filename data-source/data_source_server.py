@@ -17,8 +17,7 @@ port = 8060
 class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
 
     def initialize(self, request, context):
-        config = {'iot_api': request.iot_api,
-                  'iot_token': request.iot_token,
+        config = {'iot_token': request.iot_token,
                   'met_id': request.met_id}
 
         self.manager = DataSourceManager(config)
