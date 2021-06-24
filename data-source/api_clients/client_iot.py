@@ -37,7 +37,10 @@ class ClientIot():
 
     def fetch_last_data(self, device, elements, mask=None):
 
-        current_time = round(time.time()*1000)
+        current_time = round(time.time() * 1000)
+
+        end_time = current_time - (current_time % (3600 * 1000))
+        start_time = end_time - 1 * 60 * 60 * 1000
 
         end_time = current_time - (current_time % (3600*1000))
         start_time = end_time-1*60*60*1000
