@@ -59,10 +59,8 @@ def update_data():
     current_time = now.strftime("%H:%M:%S")
     print("Current Time =", current_time)
     print()
-    
-    #print('Uncalibrated values are:')
-    #print("PM2.5: {}".format(data.pm25))
-    #print("PM10: {}".format(data.pm10))
+
+    print('(Uncalibrated) data sample is:')
     print(data)
     print()
 
