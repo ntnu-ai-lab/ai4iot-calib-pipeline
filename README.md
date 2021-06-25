@@ -98,6 +98,25 @@ Before running the orchestrator, two important notes:
 Finally, the orchestrator script can be run which will trigger the communication through the pipeline.
 `./run-orchestrator.sh`
 
+Info about the data samples will be printed in the shell, in the format below:
+
+    Current Time = 15:09:45
+
+    (Uncalibrated) data sample is:
+    pm1: 0.5887464284896851
+    pm25: 1.7239444255828857
+    pm10: 8.807469367980957
+    air_temperature: 14.800000190734863
+    relative_humidity: 65.0
+    air_pressure: 1003.9000244140625
+    wind_speed: 1.7999999523162842
+    wind_direction: 344.0
+
+
+    Calibrated values are:
+    PM2.5: 5.343422889709473
+    PM10: 29.775833129882812
+
 **Note**: the orchestrator need protobuf and grpcio-tools python packages installed.
 
 # Other remarks
