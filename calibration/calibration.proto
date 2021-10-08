@@ -1,8 +1,6 @@
 //Define the used version of proto
 syntax = "proto3";
 
-package aqcalibration;
-
 // This data type includes all the fields for microsensor and meteorological data. Note: is synchronized with the same message type in the data client service.
 // TODO: add more fields when needed
 message DataSample {

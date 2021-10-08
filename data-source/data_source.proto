@@ -1,13 +1,10 @@
 //Define the used version of proto
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
-package aq_data_source;
-
 // This data type includes all the fields for microsensor and meteorological data. Note: is synchronized with the same message type in the calibration service.
 // TODO: add more fields when needed
 // TODO: consider adding the sensor id as input
-message DataSample {
+message DataSample1 {
   float pm1 = 1;
   float pm25 = 2;
   float pm10 = 3;
@@ -26,10 +23,12 @@ message InitRequest {
   string met_id = 3;
 }
 
+message Empty {
+}
+
 // Two services are implemented at the data client server:
 // - The initialization service with the purpose of letting the user to input his personal tokens/ids for APIs which need those.
 // - A data fetching service which retrieves the last data available from the APIs
 service AQDataSource {
-  rpc initialize(InitRequest) returns (google.protobuf.Empty);
-  rpc request_update(google.protobuf.Empty) returns (DataSample);
+  rpc request_update(Empty) returns (DataSample1);
 }
