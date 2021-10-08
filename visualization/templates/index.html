@@ -1,0 +1,29 @@
+<!-- <meta http-equiv="refresh" content="2" /> -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<html>
+  <body>
+    <p> <b> Calibrated Values </b> </p>
+    <p>PM2.5: {{ calib_pm25 }}</p>
+    <p>PM10: {{ calib_pm10 }}</p>
+    <p></p>
+    <p> <b> Last update</b></p>
+    <p> {{ update_time }} </p>
+
+    <!-- <div class="chart" id="bargraph"> -->
+      <!-- <script> -->
+	<!--     var graphs = {{plot | safe}}; -->
+	<!--     Plotly.plot('bargraph',graphs,{}); -->
+	<!-- </script> -->
+      
+      <script type="text/javascript">
+	var print_check = {{ print_check }}
+	if (print_check == "1"){
+	    var graphs ={{graphJSON | safe}};
+	    Plotly.plot('pm',graphs,{});
+	}
+      </script>
+    <!--/div>
+</body>
+</html>

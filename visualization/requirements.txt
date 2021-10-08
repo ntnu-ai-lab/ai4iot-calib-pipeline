@@ -1,0 +1,6 @@
+# GRPC Python setup requirements
+protobuf>=3.5.0
+grpcio-tools
+gunicorn
+flask
+pytz
