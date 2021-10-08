@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestratorwebui
+spec:
+  ports:
+  - name: webui
+    nodePort: 30005
+    port: 30005
+    targetPort: 8062
+  selector:
+    app: orchestrator
+  type: NodePort

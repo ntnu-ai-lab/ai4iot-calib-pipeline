@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibration1
+spec:
+  ports:
+  - name: protobuf-api
+    nodePort: 30002
+    port: 30002
+    targetPort: 8061
+  selector:
+    app: calibration1
+  type: NodePort

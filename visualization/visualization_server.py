@@ -9,9 +9,21 @@ from flask import Flask, render_template
 from datetime import datetime
 import pytz
 
+import plotly
+import plotly.graph_objs as go
+import plotly.express as px
+
+import numpy as np
+import pandas as pd
+import json
+
+from collections import deque
+
 port = 8061
 
 tz = pytz.timezone('Europe/Oslo')
+
+history_length = 12
 
 
 class CalibApp():
@@ -23,8 +35,18 @@ class CalibApp():
         self.pm10 = 0
         self.update_time = 0
 
+        self.history_pm25 = deque(maxlen=history_length)
+        self.history_pm10 = deque(maxlen=history_length)
+        self.history_time_index = deque(maxlen=history_length)
+
     def index(self):
-        return render_template('index.html', calib_pm25=self.pm25, calib_pm10=self.pm10, update_time=self.update_time)
+        if not self.history_time_index:  # If history is empty return warning html
+            bar_pm25 = None
+            bar_pm10 = None
+        else:  # Otherwise just plot whatever we have received
+            bar_pm25, bar_pm10 = self.create_plot()
+
+        return render_template('index.html', calib_pm25=self.pm25, calib_pm10=self.pm10, update_time=self.update_time, plot_pm25=bar_pm25, plot_pm10=bar_pm10)
 
     def get_app(self):
 
@@ -36,6 +58,30 @@ class CalibApp():
 
         now = datetime.now(tz)
         self.update_time = now.strftime("%H:%M:%S")
+
+        self.history_pm25.append(new_pm25)
+        self.history_pm10.append(new_pm10)
+        self.history_time_index.append(self.update_time)
+
+    def create_plot(self):
+
+        # Create plot for PM2.5 history
+        data_pm25 = px.line(y=list(self.history_pm25),
+                            x=list(self.history_time_index),
+                            labels={'x': 'Time', 'y': 'Calibrated value'},
+                            title='PM2.5 History')
+
+        graphJSON_pm25 = json.dumps(data_pm25, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # Create plot for PM10 history
+        data_pm10 = px.line(y=list(self.history_pm10),
+                            x=list(self.history_time_index),
+                            labels={'x': 'Time', 'y': 'Calibrated value'},
+                            title='PM10 History')
+
+        graphJSON_pm10 = json.dumps(data_pm10, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return graphJSON_pm25, graphJSON_pm10
 
 
 class VisualizationServicer(visualization_pb2_grpc.VisualizationServicer):

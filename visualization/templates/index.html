@@ -1,11 +1,38 @@
 <!-- <meta http-equiv="refresh" content="2" /> -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
 <html>
   <body>
-    <p> <b> Calibrated Values </b> </p>
-    <p>PM2.5: {{ calib_pm25 }}</p>
-    <p>PM10: {{ calib_pm10 }}</p>
-    <p></p>
+    <!-- <p> <b> Calibrated Values </b> </p> -->
+    <!-- <p>PM2.5: {{ calib_pm25 }}</p> -->
+    <!-- <p>PM10: {{ calib_pm10 }}</p> -->
+    <!-- <p></p> -->
     <p> <b> Last update</b></p>
     <p> {{ update_time }} </p>
-</body>
-</html>
+
+    <div class="chart" id="pm25_hist">
+      <script>
+	var graphs ={{plot_pm25 | safe}};
+	Plotly.plot('pm25_hist',graphs,{});
+      </script>
+    </div>
+
+    <div class="chart" id="pm10_hist">
+      <script>
+	var graphs ={{plot_pm10 | safe}};
+	Plotly.plot('pm10_hist',graphs,{});
+      </script>
+    </div>
+    
+    <!-- <script type="text/javascript"> -->
+    <!--   var print_check = {{ print_check }} -->
+    <!--   if ({{ print_check }} == '1'){ -->
+    <!-- 	  var graphs ={{graphJSON | safe}}; -->
+    <!-- 	  Plotly.plot('pm',graphs,{}); -->
+    <!--   } else { -->
+    <!-- 	  document.getElementById("empty-notify").innerHTML = "No data available yet"; -->
+    <!--   } -->
+    <!-- </script> -->
+<body>
+<html>

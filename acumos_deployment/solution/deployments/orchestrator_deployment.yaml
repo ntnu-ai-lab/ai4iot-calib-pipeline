@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: orchestrator
+  name: orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator
+  template:
+    metadata:
+      labels:
+        app: orchestrator
+    spec:
+      containers:
+      - image: cicd.ai4eu-dev.eu:7444/generic-serial-orchestrator/orchestrator_container:v4
+        imagePullPolicy: Always
+        name: orchestrator
+        ports:
+        - containerPort: 8061
+          name: mc-api
+        - containerPort: 8062
+          name: webui
+        volumeMounts:
+        - mountPath: /logs
+          name: logs
+      imagePullSecrets:
+      - name: acumos-registry
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /var/acumos/log
+        name: logs

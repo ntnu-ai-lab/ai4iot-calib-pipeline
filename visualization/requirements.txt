@@ -4,3 +4,5 @@ grpcio-tools
 gunicorn
 flask
 pytz
+plotly
+pandas

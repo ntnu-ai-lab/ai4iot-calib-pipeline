@@ -1,0 +1,14 @@
+//Define the used version of proto
+syntax = "proto3";
+
+message CalibratedValues {
+  float calibrated_pm25 = 1;
+  float calibrated_pm10 = 2;
+}
+
+message Empty {
+}
+
+service Visualization {
+  rpc set_values(CalibratedValues) returns (Empty);
+}
