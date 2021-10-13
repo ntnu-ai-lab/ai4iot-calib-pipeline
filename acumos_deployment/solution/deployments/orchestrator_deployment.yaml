@@ -15,7 +15,7 @@ spec:
         app: orchestrator
     spec:
       containers:
-      - image: cicd.ai4eu-dev.eu:7444/generic-serial-orchestrator/orchestrator_container:v4
+      - image: cicd.ai4eu-dev.eu:7444/generic-parallel-orchestrator/orchestrator_container:1.2
         imagePullPolicy: Always
         name: orchestrator
         ports:

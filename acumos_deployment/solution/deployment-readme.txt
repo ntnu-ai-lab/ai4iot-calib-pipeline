@@ -1,7 +1,9 @@
 ===================================================================================
-    Copyright (C) 2019 Fraunhofer Gesellschaft. All rights reserved. 
+    Copyright (C) 2019 Fraunhofer Gesellschaft.
+    Copyright (C) 2021 Peter Schueller.
+    All rights reserved. 
 ===================================================================================
-This Acumos software file is distributed by Fraunhofer Gesellschaft
+This Acumos software file is distributed by Fraunhofer Gesellschaft and Peter Schueller
 under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -23,14 +25,22 @@ Step 1:
 Extract the downloaded solution.zip folder. 
 
 Step 2:
-make sure python yaml is installed
-Now run the python script kubernetes-client-script.py. You have to provide namespace as parameter to the script.
+Make sure python yaml is installed.
+You might use
+
+    pip install -r requirements.txt
+
+to install necessary requirements for kubernetes deployment script and orchestrator client.
 
 Step 3:
+Now run the python script kubernetes-client-script.py. You have to provide namespace as parameter to the script.
+
+Step 4:
 You need to verify that deployments and services are deployed successfully. 
-                             kubectl -n namespace get all
+
+    kubectl -n <namespace> get all
+
 After running this command on terminal, you have to take a look that corresponding pods are running successfully in given namespace.
-    
 
 Moreover in the next versions we are considering the persistance volume and also resource limitations. 
 Security stuff also taken into account. 

@@ -1,9 +1,22 @@
 //Define the used version of proto
 syntax = "proto3";
 
+message DataSample {
+  float pm1 = 1;
+  float pm25 = 2;
+  float pm10 = 3;
+  float air_temperature = 4;
+  float relative_humidity = 5;
+  float precipitation = 6;
+  float air_pressure = 7;
+  float wind_speed = 8;
+  float wind_direction = 9;
+}
+
 message CalibratedValues {
   float calibrated_pm25 = 1;
   float calibrated_pm10 = 2;
+  DataSample raw_data = 3;
 }
 
 message Empty {

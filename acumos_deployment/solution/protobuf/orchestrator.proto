@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+message RunLabel {
+    string label = 1; // some identifier for the run
+}
+
+message OrchestrationConfiguration {
+    string blueprint = 1; // blueprint.json as text
+    string dockerinfo = 2; // dockerinfo.json as text
+    map<string, string> protofiles = 3; // map from protofile names to contents of all protobuf files as text
+    int32 queuesize = 4; // 0 for unlimited, or fixed number for fixed size
+    int32 iterations = 5; // limit number of iterations of each run (<= 0 means infinity)
+}
+
+message OrchestrationStatus {
+    bool success = 1;
+    int32 code = 2;
+    string message = 3;
+}
+
+message OrchestrationObservationConfiguration {
+    string name_regex = 1; // filter for name of event
+    string component_regex = 2; // filter for component of event
+}
+
+message OrchestrationEvent {
+    string run = 1; // label of this run
+    string name = 2; // type of event
+    string component = 3; // system component that generated the event
+    map<string, string> detail = 4; // additional information
+}
+
+service Orchestrator {
+    rpc initialize(OrchestrationConfiguration) returns (OrchestrationStatus);
+    rpc observe(OrchestrationObservationConfiguration) returns (stream OrchestrationEvent);
+    rpc run(RunLabel) returns (OrchestrationStatus);
+}

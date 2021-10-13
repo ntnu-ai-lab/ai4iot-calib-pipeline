@@ -37,6 +37,8 @@ class CalibApp():
 
         self.history_pm25 = deque(maxlen=history_length)
         self.history_pm10 = deque(maxlen=history_length)
+        self.history_raw_pm25 = deque(maxlen=history_length)
+        self.history_raw_pm10 = deque(maxlen=history_length)
         self.history_time_index = deque(maxlen=history_length)
 
     def index(self):
@@ -52,7 +54,7 @@ class CalibApp():
 
         return self.app
 
-    def set_values(self, new_pm25, new_pm10):
+    def set_values(self, new_pm25, new_pm10, raw_pm25, raw_pm10):
         self.pm25 = new_pm25
         self.pm10 = new_pm10
 
@@ -61,23 +63,30 @@ class CalibApp():
 
         self.history_pm25.append(new_pm25)
         self.history_pm10.append(new_pm10)
+        self.history_raw_pm25.append(raw_pm25)
+        self.history_raw_pm10.append(raw_pm10)
         self.history_time_index.append(self.update_time)
 
     def create_plot(self):
 
         # Create plot for PM2.5 history
-        data_pm25 = px.line(y=list(self.history_pm25),
+        data_pm25 = px.line(y=[list(self.history_pm25), list(self.history_raw_pm25)],
                             x=list(self.history_time_index),
-                            labels={'x': 'Time', 'y': 'Calibrated value'},
+                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'},
                             title='PM2.5 History')
+        data_pm25.data[1].name = 'Raw'
+        data_pm25.data[0].name = 'Calibrated'
 
         graphJSON_pm25 = json.dumps(data_pm25, cls=plotly.utils.PlotlyJSONEncoder)
 
         # Create plot for PM10 history
-        data_pm10 = px.line(y=list(self.history_pm10),
+        data_pm10 = px.line(y=[list(self.history_pm10), list(self.history_raw_pm10)],
                             x=list(self.history_time_index),
-                            labels={'x': 'Time', 'y': 'Calibrated value'},
+                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'},
                             title='PM10 History')
+
+        data_pm10.data[1].name = 'Raw'
+        data_pm10.data[0].name = 'Calibrated'
 
         graphJSON_pm10 = json.dumps(data_pm10, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -87,7 +96,7 @@ class CalibApp():
 class VisualizationServicer(visualization_pb2_grpc.VisualizationServicer):
 
     def set_values(self, request, context):
-        myapp.set_values(request.calibrated_pm25, request.calibrated_pm10)
+        myapp.set_values(request.calibrated_pm25, request.calibrated_pm10, request.raw_data.pm25, request.raw_data.pm10)
 
         context.set_details('No more data available')
         context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -97,6 +106,10 @@ class VisualizationServicer(visualization_pb2_grpc.VisualizationServicer):
 
 myapp = CalibApp()
 calib_app = myapp.get_app()
+
+myapp.set_values(10,20,5,15)
+time.sleep(5)
+myapp.set_values(10,20,5,15)
 
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

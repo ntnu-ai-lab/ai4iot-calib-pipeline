@@ -7,8 +7,6 @@ import grpc
 import data_source_pb2
 import data_source_pb2_grpc
 
-import google.protobuf.empty_pb2
-
 from data_source_manager import DataSourceManager
 
 import os
@@ -27,7 +25,7 @@ def readConfig(filepath):
             lines = f.readlines()
     except FileNotFoundError:
         raise Exception('Config file not found!')
-        #return {'iot_api': address, 'iot_token': token}
+        # return {'iot_api': address, 'iot_token': token}
     lines = [line.strip() for line in lines]
     lineno = 0
     for line in lines:
@@ -71,7 +69,7 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
 
         data = self.manager.collect_sample()
 
-        response = data_source_pb2.DataSample1()
+        response = data_source_pb2.DataSample()
 
         response.pm1 = data['pm1_iot']
         response.pm25 = data['pm25_iot']

@@ -275,6 +275,7 @@ def main():
         if deployment.is_orchestrator_present("orchestrator_client.py", path_dir):
             print("Node IP-address : " + deployment.get_node_ip_address(namespace))
             print("Orchestrator Port is : " + str(deployment.port_mapping.get('orchestrator')))
+            print("Please run python orchestrator_client/orchestrator_client.py --endpoint=%s:%d --basepath=./" % (deployment.get_node_ip_address(namespace), deployment.port_mapping.get('orchestrator')))
         else:
             print("Thank you")
     else:

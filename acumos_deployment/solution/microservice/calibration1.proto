@@ -19,6 +19,7 @@ message DataSample {
 message CalibResponse {
   float calibrated_pm25 = 1;
   float calibrated_pm10 = 2;
+  DataSample raw_data = 3;
 }
 
 //Define the service

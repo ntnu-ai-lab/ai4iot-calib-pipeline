@@ -5,7 +5,7 @@ import grpc
 import orchestrator_pb2 as orchestrator__pb2
 
 
-class start_orchestratorStub(object):
+class OrchestratorStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -14,42 +14,74 @@ class start_orchestratorStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.executePipeline = channel.unary_unary(
-                '/start_orchestrator/executePipeline',
-                request_serializer=orchestrator__pb2.PipelineConfig.SerializeToString,
-                response_deserializer=orchestrator__pb2.PipelineStatus.FromString,
+        self.initialize = channel.unary_unary(
+                '/Orchestrator/initialize',
+                request_serializer=orchestrator__pb2.OrchestrationConfiguration.SerializeToString,
+                response_deserializer=orchestrator__pb2.OrchestrationStatus.FromString,
+                )
+        self.observe = channel.unary_stream(
+                '/Orchestrator/observe',
+                request_serializer=orchestrator__pb2.OrchestrationObservationConfiguration.SerializeToString,
+                response_deserializer=orchestrator__pb2.OrchestrationEvent.FromString,
+                )
+        self.run = channel.unary_unary(
+                '/Orchestrator/run',
+                request_serializer=orchestrator__pb2.RunLabel.SerializeToString,
+                response_deserializer=orchestrator__pb2.OrchestrationStatus.FromString,
                 )
 
 
-class start_orchestratorServicer(object):
+class OrchestratorServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def executePipeline(self, request, context):
+    def initialize(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def observe(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def run(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_start_orchestratorServicer_to_server(servicer, server):
+def add_OrchestratorServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'executePipeline': grpc.unary_unary_rpc_method_handler(
-                    servicer.executePipeline,
-                    request_deserializer=orchestrator__pb2.PipelineConfig.FromString,
-                    response_serializer=orchestrator__pb2.PipelineStatus.SerializeToString,
+            'initialize': grpc.unary_unary_rpc_method_handler(
+                    servicer.initialize,
+                    request_deserializer=orchestrator__pb2.OrchestrationConfiguration.FromString,
+                    response_serializer=orchestrator__pb2.OrchestrationStatus.SerializeToString,
+            ),
+            'observe': grpc.unary_stream_rpc_method_handler(
+                    servicer.observe,
+                    request_deserializer=orchestrator__pb2.OrchestrationObservationConfiguration.FromString,
+                    response_serializer=orchestrator__pb2.OrchestrationEvent.SerializeToString,
+            ),
+            'run': grpc.unary_unary_rpc_method_handler(
+                    servicer.run,
+                    request_deserializer=orchestrator__pb2.RunLabel.FromString,
+                    response_serializer=orchestrator__pb2.OrchestrationStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'start_orchestrator', rpc_method_handlers)
+            'Orchestrator', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class start_orchestrator(object):
+class Orchestrator(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def executePipeline(request,
+    def initialize(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +91,42 @@ class start_orchestrator(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/start_orchestrator/executePipeline',
-            orchestrator__pb2.PipelineConfig.SerializeToString,
-            orchestrator__pb2.PipelineStatus.FromString,
+        return grpc.experimental.unary_unary(request, target, '/Orchestrator/initialize',
+            orchestrator__pb2.OrchestrationConfiguration.SerializeToString,
+            orchestrator__pb2.OrchestrationStatus.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def observe(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/Orchestrator/observe',
+            orchestrator__pb2.OrchestrationObservationConfiguration.SerializeToString,
+            orchestrator__pb2.OrchestrationEvent.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def run(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Orchestrator/run',
+            orchestrator__pb2.RunLabel.SerializeToString,
+            orchestrator__pb2.OrchestrationStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
