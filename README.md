@@ -5,6 +5,10 @@ Currently, there are three modules which, together, form a pipeline for the cali
 
 The modules are prepared to be deployed through the AI4EU Experiments Platform. This means that they are containerized and are ran in Docker containers, expose gRPC services and expects input messages as protobufs.
 
+# Pipeline
+
+![calibration_pipeline_acumos](https://user-images.githubusercontent.com/45718165/137711345-dfa5e2da-10b1-4436-80ca-f2f929b8bd99.png)
+
 # Component description
 
 ## Data Source
@@ -24,11 +28,45 @@ The Visualization component implements a simple web interface which presents his
 
 ### Data Source
 
+Go to folder and build the docker container.
+`cd data-source && ./docker-build.sh`
+
+Then, we can launch the service
+`./docker-run.sh`
+
+Before any call to the data source service, the user must input credentials for some external APIs. The data source server expects a config file named `.aqdata` under the path `/config/.aqdata` with the credentials for the Span and MET APIs (https://span.lab5e.com and https://frost.met.no/index.html), with the format below.
+
+      #IOT data
+      iot_token=<user token>
+
+      #MET API
+      met_id=<user id>
+      
+The user can do this with the command `docker cp <orig_file> <container_id>:/config/.aqdata`
+*TODO*: describe vars
+
 ### Calibration
+
+Go to folder and build the docker container.
+`cd calibration && ./docker-build.sh`
+
+Then, we can launch the service
+`./docker-run.sh`
 
 ### Visualization
 
+Go to folder and build the docker container.
+`cd visualization && ./docker-build.sh`
+
+Then, we can launch the service
+`./docker-run.sh`
+
 ### Orchestration
+
+Orchestrator is the term to the script which connects to all running modules and passes messages forward through the pipeline.
+
+Before running the orchestrator, it is needed to copy the protobuf message definitions to its folder and compile locally (the client needs to be aware of the message types)
+`cd ../user-clients/orchestrator && ./populate_and_rebuild_protobuf.sh`
 
 ## Deployment with AI4EU Experiments Platform (ACUMOS)
 
@@ -38,25 +76,32 @@ To prevent any privacy issues this is done locally at runtime with kubernetes co
 
 ### Orchestration
 
-# Outdated - Prediction
-It includes a training and predicting services. The former receives some parameters as input (check model.proto in prediction folder, TODO: describe here all the parameters) and trains a random forest classifier to predict whether the target will be over the threshold in the next 24 hours. The prediction service receives a sample of the features with which the classifier was trained and predicts the pollution level for the next 24 hours.
+**TODO** Previous step: download solution from platform
 
-## Running
-### 1) Run the server
-First, the docker container needs to be built.
-`cd prediction && ./docker-build.sh`
+**1)** Start minikube
 
-Then, we can launch the service
-`./docker-run.sh`
+`minikube start`
 
-### 2) Run the client
-Before running the client, it is needed to copy the protobuf message definitions to its folder and compile locally (the client needs to be aware of the message types)
-`cd ../clients && ./populate_and_rebuild_protobuf.sh`
+**2)** Create a new namespace
 
-Finally, the client scripts can be run. First, the model needs to be trained, so there is a script to call the training service. Input parameters are currently defined inside the python script `aq_train_client-py`. The service returns metrics on the model performance, which are printed by the client script.
-`./run-train-client.sh`
+`kubectl create namespace <name>`
 
-Then, we can predict based from current observations. The predict script fetches the last observations from NILU, communicates with the server and prints the predicted AQ level received through the predicting service. (for now it only fetches NILU data, so we cannot actually use models trained with more features. TODO: implement fetching of last observations of other features: weather and traffic)
-`./run-predict-client.sh`
+**3)** Run deployment script
 
-**Note**: the clients need protobuf and grpcio-tools python packages installed.
+`python kubernetes-client-script.py -n <name>`
+
+**4)** 
+
+The user can do this with the command `kubectl cp <orig_file> <namespace_id>/<pod_id>:/config/.aqdata`
+
+It is expected that the AI4EU Experiments offer this functionality in future versions. For now we have to do it manually.
+
+**5)** Run the orchestrator client
+
+Run a single time - `python orchestrator_client <ip>:<port>`
+
+**TODO** run as chronjob
+
+**6)** Visualize the output
+
+The visualization module prints output in the format of an html page available through a webui port in the kubernetes cluster
