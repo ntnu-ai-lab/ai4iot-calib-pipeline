@@ -8,7 +8,7 @@ And download the solution.zip exported by the pltaform.
 
 ![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)
 
-Save the file and extract it locally.
+Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.
 
 ### Set up kubernetes and containers
 
