@@ -195,7 +195,7 @@ def observe_initialize_run(config: RunConfiguration):
         name_regex='.*' if config.observer_namefilter is None else config.observer_namefilter,
         component_regex='.*' if config.observer_componentfilter is None else config.observer_componentfilter
     )
-    #oot = observe(config.endpoint, config.message_display, server_configuration)
+    oot = observe(config.endpoint, config.message_display, server_configuration)
 
     logging.info("calling initialize")
     stub.initialize(orchestrator_pb2.OrchestrationConfiguration(
@@ -215,7 +215,7 @@ def observe_initialize_run(config: RunConfiguration):
     stub.run(orchestrator_pb2.RunLabel())
 
     # wait for observer to terminate
-    #oot.join()
+    oot.join()
 
 
 def main():

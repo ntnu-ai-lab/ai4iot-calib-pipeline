@@ -107,10 +107,6 @@ class VisualizationServicer(visualization_pb2_grpc.VisualizationServicer):
 myapp = CalibApp()
 calib_app = myapp.get_app()
 
-myapp.set_values(10,20,5,15)
-time.sleep(5)
-myapp.set_values(10,20,5,15)
-
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 

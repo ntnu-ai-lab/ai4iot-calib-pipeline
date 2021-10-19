@@ -86,7 +86,7 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         # if not self.throw_grpc_error:
         #     data = self.manager.collect_sample()
 
-        #     response = data_source_pb2.DataSample1()
+        #     response = data_source_pb2.DataSample()
 
         #     response.pm1 = data['pm1_iot']
         #     response.pm25 = data['pm25_iot']
@@ -105,10 +105,12 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         # else:
         #     # Testing grpc error handling (needed for AI4EU pipeline)
         #     # TODO: adapt code to return error code after 1 data request (or decide how to do data managing otherwise)
+        #     context.set_details('No more data available')
+        #     context.set_code(grpc.StatusCode.NOT_FOUND)
 
         #     self.throw_grpc_error = False
 
-        #     return data_source_pb2.DataSample1()
+        #     return data_source_pb2.DataSample()
 
 
 shared_folder = os.getenv("SHARED_FOLDER_PATH")
