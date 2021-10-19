@@ -3,10 +3,8 @@ import orchestrator_pb2_grpc
 
 import grpc
 
-import os
 import time
 import schedule
-from datetime import datetime
 
 
 def update_data():
@@ -40,12 +38,9 @@ calibration_stub = orchestrator_pb2_grpc.CalibrationStub(calibration_channel)
 visualization_channel = grpc.insecure_channel("localhost:8062")
 visualization_stub = orchestrator_pb2_grpc.VisualizationStub(visualization_channel)
 
-# TODO: passage of data onto next modules is coded in the update_data() method, to allow for scheduling
-
 # Implements a scheduler to update the data at a fixed frequency.
-# Smaller periods are implemented for testing, the final deployment should update every hour. For instance, at the minute 15 every hour to allow every API to update its data.
-schedule.every(5).seconds.do(update_data)
-# schedule.every().hour.at(":05").do(update_data)
+# For example, let's say that we want an update every hour at the minute 15 (01:15, 02:15, ..., 10:15, so on)
+schedule.every().hour.at(":15").do(update_data)
 
 try:
     while True:

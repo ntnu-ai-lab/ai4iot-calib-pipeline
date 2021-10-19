@@ -7,8 +7,7 @@ class DataSourceManager():
     def __init__(self, config):
         self.config = config
         # Create api clients
-        self.client_iot = ClientIot(addr=config['iot_api'],
-                                    token=config['iot_token'])
+        self.client_iot = ClientIot(token=config['iot_token'])
         self.client_met = ClientMet(client_id=config['met_id'])
         self.client_nilu = ClientNilu()
 

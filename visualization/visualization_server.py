@@ -59,7 +59,7 @@ class CalibApp():
         self.pm10 = new_pm10
 
         now = datetime.now(tz)
-        self.update_time = now.strftime("%H:%M:%S")
+        self.update_time = now.strftime("%H")
 
         self.history_pm25.append(new_pm25)
         self.history_pm10.append(new_pm10)

@@ -2,8 +2,6 @@
 syntax = "proto3";
 
 // This data type includes all the fields for microsensor and meteorological data. Note: is synchronized with the same message type in the calibration service.
-// TODO: add more fields when needed
-// TODO: consider adding the sensor id as input
 message DataSample {
   float pm1 = 1;
   float pm25 = 2;
@@ -16,19 +14,9 @@ message DataSample {
   float wind_direction = 9;
 }
 
-// Personal data to initialize the communication with data APIs
-message InitRequest {
-  string iot_api = 1;
-  string iot_token = 2;
-  string met_id = 3;
-}
-
 message Empty {
 }
 
-// Two services are implemented at the data client server:
-// - The initialization service with the purpose of letting the user to input his personal tokens/ids for APIs which need those.
-// - A data fetching service which retrieves the last data available from the APIs
 service AQDataSource {
   rpc request_update(Empty) returns (DataSample);
 }

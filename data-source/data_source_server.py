@@ -15,9 +15,6 @@ port = 8061
 
 
 def readConfig(filepath):
-    address = ''
-    token = ''
-
     config = {}
 
     try:
@@ -36,9 +33,7 @@ def readConfig(filepath):
         words = line.split('=', 1)
         if len(words) != 2:
             raise Exception('Not a key value expression on line {0} in {1}: {2}'.format(lineno, filepath, line))
-        if words[0] == 'iot_api':
-            config['iot_api'] = words[1]
-        elif words[0] == 'iot_token':
+        if words[0] == 'iot_token':
             config['iot_token'] = words[1]
         elif words[0] == 'met_id':
             config['met_id'] = words[1]
@@ -60,9 +55,6 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         self.first_call = False
 
     def request_update(self, request, context):
-        # config = {'iot_api': request.iot_api,
-        #          'iot_token': request.iot_token,
-        #          'met_id': request.met_id}
 
         if self.first_call:
             self.init_config()
