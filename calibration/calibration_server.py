@@ -35,6 +35,9 @@ class CalibrationServicer(calibration_pb2_grpc.CalibrationServicer):
 
         response.calibrated_pm25, response.calibrated_pm10 = self.manager.predict(np.array(list(sample.values())).reshape(1, -1))
 
+        response.raw_data.pm25 = request.pm25
+        response.raw_data.pm10 = request.pm10
+
         return response
 
 

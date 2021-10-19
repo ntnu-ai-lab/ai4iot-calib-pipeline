@@ -17,4 +17,8 @@ RUN pip3 install -r requirements.txt
 
 RUN python3 -m grpc_tools.protoc --python_out=. --proto_path=. --grpc_python_out=. data_source.proto
 
+RUN mkdir /config
+
+ENV PYTHONUNBUFFERED=1
+
 ENTRYPOINT [ "python3","data_source_server.py" ]

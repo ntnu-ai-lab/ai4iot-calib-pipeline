@@ -1,125 +1,35 @@
-# ai4iot-acumos
+# Air quality low cost sensor calibration
 
-This repository implements modules towards the pipeline for the AI4IoT pilot, using the Acumos infrastructure from the AI4EU platform. Eventually, it will include several services. Currently, only the calibration service is developed.
+This repository implements modules towards the pipeline for the AI4IoT pilot, using the Acumos infrastructure from the AI4EU platform.
+Currently, there are three modules which, together, form a pipeline for the calibration of low-cost sensors. The modules are: a `data source` which fetches data from several external APIs and concatenates them, a `calibration` which predicts the true value at the sensor location and a simple `visualization` module which implements a web interface to analyse the output of the calibration procedure.
 
-The picture below illustrates the schematic of the pipeline, which includes two modules: one to act as a data broker, i.e., to retrieve data from the APIs of interest (low-cost sensors, weather, etc) and feed it to the services who need it; second, a calibration module which is deployed with a model trained to calibrated low-cost sensor data (currently limited to sensors in Elgeseter and Torget).
+The modules are prepared to be deployed through the AI4EU Experiments Platform. This means that they are containerized and are ran in Docker containers, expose gRPC services and expects input messages as protobufs.
 
-![image](https://user-images.githubusercontent.com/45718165/123275711-daa89980-d504-11eb-98b5-ac832add050f.png)
+# Pipeline
 
-# Data Source
-The data source module exposes two services: *initialize* and *request_update*. The first receives the credentials for the APIs which need them (for now Span IoT for low-cost sensors and MET for weather data) and establishes the connections to those APIs. The second can be called anytime the user wants an update on the data.
-Important to note that the container provides data updated at every hour on the hour (i.e., at :00).
+![calibration_pipeline_acumos](https://user-images.githubusercontent.com/45718165/137711345-dfa5e2da-10b1-4436-80ca-f2f929b8bd99.png)
 
-    message DataSample {
-      float pm1 = 1;
-      float pm25 = 2;
-      float pm10 = 3;
-      float air_temperature = 4;
-      float relative_humidity = 5;
-      float precipitation = 6;
-      float air_pressure = 7;
-      float wind_speed = 8;
-      float wind_direction = 9;
-    }
+# Component description
 
-    message InitRequest {
-      string iot_api = 1;
-      string iot_token = 2;
-      string met_id = 3;
-    }
+## Data Source
+The [Data Source](docs/data-source.md) component serves as an aggregator of data incoming from different services, and which is useful for the AI4IoT pipeline. In particular, it connects to external APIs and provides data in an unified (and standardized through protobuf message definition) way.
+The AI4IoT tackles air quality in the city of Trondheim, Norway. Therefore, the current version of this component fetches data for this city. The structure can, however, be replicated to any other place by extending the scripts with the given API calls for the place of interest.
+Currently, available data through this component is pollution measurements both from a network of low-cost sensors, a (much smaller) network of industrial sensors and meteorological data.
 
-    service AQDataSource {
-      rpc initialize(InitRequest) returns (google.protobuf.Empty);
-      rpc request_update(google.protobuf.Empty) returns (DataSample);
-    }
+## Calibration
+The [Calibration](docs/calibration.md) component is part of the AI4IoT pipeline. It implements a machine learning model that calibrates data coming from low-cost sensors, such that the output is as close as possible to reference values. The component is deployed with a pre-trained model and outputs the calibrated values for PM2.5 and PM10 measurements. Inputs are PM measurements from the sensor and meteorological data.
 
-# Calibration
-The calibrating service implements the calibration of low-cost sensors in Trondheim. As a proof of concept, it is now deployed with a model trained for the Elgeseter sensor. Currently, the deployed model is trained with low-cost sensor and weather data. Therefore, it expects each sample to include this data.
-It exposes the service *calibrate_sample* which receives a data sample (see fields below) and outputs the calibrated values for PM2.5 and PM10.
+## Visualization
+The [Visualization](docs/visualization) component implements a simple web interface which presents historical data (for the past 12 hours) of the raw data from a low-cost sensor and the calibrated values.
 
-    message DataSample {
-      float pm1 = 1;
-      float pm25 = 2;
-      float pm10 = 3;
-      float air_temperature = 4;
-      float relative_humidity = 5;
-      float precipitation = 6;
-      float air_pressure = 7;
-      float wind_speed = 8;
-      float wind_direction = 9;
-    }
+# Deployment instructions
 
-    message CalibResponse {
-      float calibrated_pm25 = 1;
-      float calibrated_pm10 = 2;
-    }
+This repository documents two possible alternatives for the depolyment of this pipeline. First we describe how to do it locallly with docker and manual orchestration, with a script written just for this particular case. Finally, the deployment process through the AI4EU Experiments platform (which is based on the Acumos platform) is documented. These are documented in separated files, follow the given links for each of them.
 
-    service Calibration {
-      rpc calibrate_sample(DataSample) returns (CalibResponse);
-    }
+## Locally with docker
 
-# Running the pipeline
+[Local deployment with docker tools](docs/docker.md)
 
-### 1) Run the data source server
-Go to folder and build the docker container.
-`cd data-source && ./docker-build.sh`
+## Deployment with AI4EU Experiments Platform (ACUMOS)
 
-Then, we can launch the service
-`./docker-run.sh`
-
-### 2) Run the calibration server
-Go to folder and build the docker container.
-`cd calibration && ./docker-build.sh`
-
-Then, we can launch the service
-`./docker-run.sh`
-
-### 2) Run the orchestrator
-Orchestrator is the term to the script which connects to all running modules and passes messages forward through the pipeline.
-
-Before running the orchestrator, it is needed to copy the protobuf message definitions to its folder and compile locally (the client needs to be aware of the message types)
-`cd ../user-clients/orchestrator && ./populate_and_rebuild_protobuf.sh`
-
-Before running the orchestrator, two important notes:
-- The script expects a config file named `.aqdata` under the home folder (`/home/<username>/.aqdata`) with the credentials for the Span and MET APIs (https://span.lab5e.com and https://frost.met.no/index.html), with the format below.
-
-      #IOT data
-      iot_token=<user token>
-
-      #MET API
-      met_id=<user id>
-      
-- The orchestrator implements a scheduler to call the pipeline at a fixed frequency. For illustrative purposes it now requests udpated data to the pipeline every 10 seconds, in real delpoyment it will make sense to update every hour, some minutes after the hour.
-
-      schedule.every(10).seconds.do(update_data) -> update every 10 seconds
-      schedule.every().hour.at(":05").do(update_data) -> update every hour at :05 minutes
- 
-
-Finally, the orchestrator script can be run which will trigger the communication through the pipeline.
-`./run-orchestrator.sh`
-
-Info about the data samples will be printed in the shell, in the format below:
-
-    Current Time = 15:09:45
-
-    (Uncalibrated) data sample is:
-    pm1: 0.5887464284896851
-    pm25: 1.7239444255828857
-    pm10: 8.807469367980957
-    air_temperature: 14.800000190734863
-    relative_humidity: 65.0
-    air_pressure: 1003.9000244140625
-    wind_speed: 1.7999999523162842
-    wind_direction: 344.0
-
-
-    Calibrated values are:
-    PM2.5: 5.343422889709473
-    PM10: 29.775833129882812
-
-**Note**: the orchestrator need protobuf and grpcio-tools python packages installed.
-
-# Other remarks
-There is also the possibility to only containerize the calibration service and do all the data fetching in the client side. This is what is implemented in the  `user-clients/calibration-only-client`folder. For now development is focused in the pipeline version, this might be an alternative.
-
-Also, the final goal is to do orchestration automatically through the AI4EU Experiments platform.
+[Deployment through the AI4EU Experiments platform](docs/acumos.md)

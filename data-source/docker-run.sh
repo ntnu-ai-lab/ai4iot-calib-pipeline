@@ -1,1 +1,1 @@
-docker run -p 8060:8060 --rm -it ai4iot_data_source
+docker run -p 8060:8061 --name data-source --rm -it ai4iot-data-source

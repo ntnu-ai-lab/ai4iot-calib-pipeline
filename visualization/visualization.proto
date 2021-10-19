@@ -1,7 +1,6 @@
 //Define the used version of proto
 syntax = "proto3";
 
-// This data type includes all the fields for microsensor and meteorological data. Note: is synchronized with the same message type in the calibration service.
 message DataSample {
   float pm1 = 1;
   float pm25 = 2;
@@ -14,9 +13,15 @@ message DataSample {
   float wind_direction = 9;
 }
 
+message CalibratedValues {
+  float calibrated_pm25 = 1;
+  float calibrated_pm10 = 2;
+  DataSample raw_data = 3;
+}
+
 message Empty {
 }
 
-service AQDataSource {
-  rpc request_update(Empty) returns (DataSample);
+service Visualization {
+  rpc set_values(CalibratedValues) returns (Empty);
 }
