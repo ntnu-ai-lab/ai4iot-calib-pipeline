@@ -36,8 +36,8 @@ The Visualization component implements a simple web interface which presents his
 
 `./docker-run.sh`
       
-Copy the config file to the data source container with the command `docker cp <orig_file> <container_id>:/config/.aqdata`
-*TODO*: describe vars
+Copy the config file to the data source container with the command `docker cp <orig_file> data-source:/config/.aqdata`  
+Check the README inside data-source for details on the config file.
 
 ### Calibration
 
@@ -65,46 +65,14 @@ Orchestrator is the term to the script which connects to all running modules and
 
 **1)** Before running the orchestrator, it is needed to copy the protobuf message definitions to its folder and compile locally (the client needs to be aware of the message types)
 
-`cd ../user-clients/orchestrator && ./populate_and_rebuild_protobuf.sh`
+`cd local-orchestrator && ./build_protobuf.sh`
 
-**2** **TODO** run the manual orchestrator script
+**2)** Run the orchestration script
+
+`./run-orchestrator.sh`
+
+The output of the pipeline is available through the webui available at the address `localhost:8000`
 
 ## Deployment with AI4EU Experiments Platform (ACUMOS)
 
-Some of the external APIs used by the Data Source component need personal credentials to be accessible. Before running the pipeline, the user needs to input his/her personal credentials into the container. It is expected that the AI4EU Experiments offer this functionality in future versions. For now we have to do it manually.
-To prevent any privacy issues this is done locally at runtime with kubernetes copy tools.  
-`kubectl cp <orig_file> <namespace_id>/<pod_id>:<dest_file>`
-
-### Orchestration
-
-**TODO** Previous step: download solution from platform
-
-**1)** Start minikube
-
-`minikube start`
-
-**2)** Create a new namespace
-
-`kubectl create namespace <name>`
-
-**3)** Run deployment script
-
-`python kubernetes-client-script.py -n <name>`
-
-**4)** 
-
-Copy the config file to the data source container `kubectl cp <orig_file> <namespace_id>/<pod_id>:/config/.aqdata`
-
-It is expected that the AI4EU Experiments offer this functionality in future versions. For now we have to do it manually.
-
-**5)** Run the orchestrator client
-
-Run a single time - `python orchestrator_client <ip>:<port>`
-
-**TODO** run as chronjob
-
-**6)** Visualize the output
-
-**TODO** how to obtain ip and port  
-The visualization module prints output in the format of an html page available through a webui port in the kubernetes cluster.  
-Open browser at address `<minikube ip>:<visualization-webui-port>`
+[link to readme](README_Acumos.md)
