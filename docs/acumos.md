@@ -1,5 +1,14 @@
 ### Download solution from Acumos
-**TODO** Previous step: download solution from platform
+
+Go to the visual studio of the AI4EU Experiments and open the *ai4iot-calib* solution. Then click on Deploy -> Deploy to Local.
+
+![image](https://user-images.githubusercontent.com/45718165/137911279-88d2fb1f-442a-4d25-8cbf-4b01c3ee3084.png)
+
+And download the solution.zip exported by the pltaform.
+
+![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)
+
+Save the file and extract it locally.
 
 ### Set up kubernetes and containers
 
@@ -19,7 +28,9 @@ Ex.: `kubectl create namespace ai4iot`
 
 Ex.: `python kubernetes-client-script.py -n ai4iot`
 
-Note the info printed by this script, the command for the orchestrator client will be used in a further step.
+Note the info printed by this script, as in the example below, the command for the orchestrator client will be used in a further step.
+
+![image](https://user-images.githubusercontent.com/45718165/137909352-7e6377a3-0831-47b8-8206-51885a30b54a.png)
 
 **4)** Run `watch kubectl get all -n <namespace_id> -o wide` (Ex.: `watch kubectl get all -n ai4iot -o wide`) and wait until all pods are with STATUS Running, as in the following example. After that, CTRL+C to stop the watch. This is needed to ensure that all containers are up and running before running the pipeline.
 
@@ -28,9 +39,13 @@ Note the info printed by this script, the command for the orchestrator client wi
 **5)** Before running the pipeline, the user must copy into the data source container his/hers credentials to access external data. Check data-source README for more info on this configuration. This is done through the `kubectl cp` command. A script with the preconfigured command is available under the *utils* folder, which can be ran as follows:  
 `utils/copy_file_to_container.sh <orig_file> <namespace_id>`
 
-Ex.: `utils/copy_file_to_container.sh ~/.aqdata ai4iot`
+Ex.: `utils/copy_config_kubernetes.sh ~/.aqdata ai4iot`
 
-It is expected that the AI4EU Experiments offer this functionality in future versions. For now we have to do it manually.
+The full command is:
+
+`kubectl cp <orig_file> <namespace_id>/$(kubectl get pod -l app=data-source1 -o jsonpath="{.items[0].metadata.name}" -n <namespace_id>):/config/.aqdata`
+
+It is expected that the AI4EU Experiments offers this functionality in future versions. For now we have to do it manually.
 
 ### Run the pipeline
 **1)** Run the orchestrator client
