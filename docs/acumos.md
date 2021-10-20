@@ -1,3 +1,9 @@
+### Prerequisites
+
+- Install Docker: https://docs.docker.com/get-docker/
+- Install minikube: https://minikube.sigs.k8s.io/docs/start/
+- Install Kubernetes: https://kubernetes.io/docs/tasks/tools/
+
 ### Download solution from Acumos
 
 Go to the visual studio of the AI4EU Experiments and open the *ai4iot-calib* solution. Then click on Deploy -> Deploy to Local.
