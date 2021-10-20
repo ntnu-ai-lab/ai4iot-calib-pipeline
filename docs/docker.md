@@ -1,3 +1,7 @@
+### Prerequisites
+
+- Install Docker: https://docs.docker.com/get-docker/
+
 ### Data Source
 
 **1)** Go to folder and build the docker container.
