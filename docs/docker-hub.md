@@ -12,7 +12,7 @@
 `docker run -p 8061:8061 --name calibration --rm -it tsveiga/ai4iot:calibration`  
 `docker run -p 8000:8062 -p 8062:8061 --name visualization --rm -it tsveiga/ai4iot:visualization`
       
-**3)** Copy the config file to the data source container, check the README inside data-source for details on the config file.
+**3)** Copy the config file to the data source container, check the README inside [data source](data-source.md) for details on the config file.
  
  `docker cp <orig_file> data-source:/config/.aqdata`  
 
