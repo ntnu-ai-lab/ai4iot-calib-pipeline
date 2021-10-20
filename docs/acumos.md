@@ -50,12 +50,12 @@ It is expected that the AI4EU Experiments offers this functionality in future ve
 ### Run the pipeline
 **1)** Run the orchestrator client
 
-Run a single time. 
+Here, we make use of the command outputed by the `kubernetes-client-script`. We present two options, first if one wants to run the pipeline only a single time:  
 `python orchestrator_client/orchestrator_client.py --endpoint=<node_ip>:<orchestrator_port> --basepath=./`
 
 Ex.: `python orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
 
-Run with a given frequency, where <n_seconds> is the number of seconds between each call.   
+However, in our particular case, we need the calibration output to be updated every hour, since all the input data is also updated with that frequency. For that we can implement a chronjob. For now and for illustraton purposes, the most simple is to run the orchestrator client with a fixed frequency. For that we use the command `watch`, where <n_seconds> is the number of seconds between each call:  
 `watch -n <n_seconds> python orchestrator_client/orchestrator_client.py --endpoint=<node_ip>:<orchestrator_port> --basepath=./`
 
 Ex. for every hour: `watch -n 3600 python orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
