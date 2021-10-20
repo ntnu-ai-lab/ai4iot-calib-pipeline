@@ -24,7 +24,7 @@ The [Visualization](docs/visualization.md) component implements a simple web int
 
 # Deployment instructions
 
-This repository documents two possible alternatives for the depolyment of this pipeline. First we describe how to do it locallly with docker and manual orchestration, with a script written just for this particular case. Finally, the deployment process through the AI4EU Experiments platform (which is based on the Acumos platform) is documented. These are documented in separated files, follow the given links for each of them.
+This repository documents three possible alternatives for the deployment of this pipeline. First we describe the procedure to deploy locally with docker and manual orchestration (i.e., a script written just for this particular case). Here there are two sub-alternatives, either to build the containers locally from the source code or pull from [Docker Hub](https://hub.docker.com), although the latter is recommended. Finally, the deployment process through the AI4EU Experiments platform (which is based on the Acumos platform) is documented. The following links lead to documentation for each of the alternatives.
 
 ## Locally with docker
 
