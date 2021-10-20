@@ -28,7 +28,7 @@ This repository documents two possible alternatives for the depolyment of this p
 
 ## Locally with docker
 
-[Local deployment with docker containers built locally](docs/docker.md)
+[Local deployment with docker containers built locally](docs/docker-local.md)
 
 [Local deployment with docker containers pulled from Docker Hub](docs/docker-hub.md)
 
