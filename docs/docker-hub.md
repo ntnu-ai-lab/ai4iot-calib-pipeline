@@ -1,3 +1,7 @@
+### Prerequisites
+
+- Install Docker: https://docs.docker.com/get-docker/
+
 ### Container set up
 
 **1)** Pull containers from Docker Hub
