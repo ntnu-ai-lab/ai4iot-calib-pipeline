@@ -9,7 +9,7 @@
 `./docker-run.sh`
       
 Copy the config file to the data source container with the command `docker cp <orig_file> data-source:/config/.aqdata`  
-Check the README inside data-source for details on the config file.
+Check the README inside [data source](data-source.md) for details on the config file.
 
 ### Calibration
 
