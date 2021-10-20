@@ -36,7 +36,7 @@ Note the info printed by this script, as in the example below, the command for t
 
 ![image](https://user-images.githubusercontent.com/45718165/137887263-854da8d7-0acc-441f-9196-2f3110bee814.png)
 
-**5)** Before running the pipeline, the user must copy into the data source container his/hers credentials to access external data. Check data-source README for more info on this configuration. This is done through the `kubectl cp` command. A script with the preconfigured command is available under the *utils* folder, which can be ran as follows:  
+**5)** Before running the pipeline, the user must copy into the data source container his/hers credentials to access external data. Check the [data source](data-source.md) README for more info on this configuration. This is done through the `kubectl cp` command. A script with the preconfigured command is available under the *utils* folder, which can be ran as follows:  
 `utils/copy_file_to_container.sh <orig_file> <namespace_id>`
 
 Ex.: `utils/copy_config_kubernetes.sh ~/.aqdata ai4iot`
