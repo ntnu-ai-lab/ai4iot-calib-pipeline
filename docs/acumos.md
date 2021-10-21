@@ -10,7 +10,7 @@ Go to the Design Studio of the AI4EU Experiments and open the *ai4iot-calib* sol
 
 ![image](https://user-images.githubusercontent.com/45718165/137911279-88d2fb1f-442a-4d25-8cbf-4b01c3ee3084.png)
 
-And download the solution.zip exported by the pltaform.
+And download the solution.zip exported by the platform.
 
 ![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)
 
