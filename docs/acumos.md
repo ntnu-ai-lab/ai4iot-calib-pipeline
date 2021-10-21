@@ -8,7 +8,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ### Download solution from Acumos
 
-Go to the Design Studio of the AI4EU Experiments and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below).
+Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below).
 
 ![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)
 
