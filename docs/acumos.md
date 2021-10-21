@@ -75,4 +75,7 @@ To find the webui port run the command `kubectl get services -n <namespace_id>` 
 
 The ip address is the same used for calling the orchestrator, or the command `minikube ip` can be used to find it.
 
-Finally, open the respective address in any browser: `<node_ip>:<visualization_webui_port>`
+Finally, open the respective address in any browser: `<node_ip>:<visualization_webui_port>`, and the output of the pipeline should be visible as in the image below.
+
+![image](https://user-images.githubusercontent.com/45718165/138251559-a64c8738-4ee0-4b78-a6d2-fede18e0ec0f.png)
+
