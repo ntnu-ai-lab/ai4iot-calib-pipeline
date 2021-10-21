@@ -77,7 +77,7 @@ Ex. for every hour: `watch -n 3600 python orchestrator_client/orchestrator_clien
 **2)** Visualize the output
 
 The visualization module prints output in the format of an html page available through a webui port in the kubernetes cluster.  
-To find the webui port run the command `kubectl get services -n <namespace_id>` and search for the port of the visualization1webui, as in the following example:  
+To find the webui port run the command `kubectl get services -n <namespace_id>` and search for the port of the visualization1webui, as in the following example where the webui port is 30001.  
 
 ![image](https://user-images.githubusercontent.com/45718165/137888386-2423a4ba-901a-4a42-9c30-3a1ce4ee5a7e.png)
 
