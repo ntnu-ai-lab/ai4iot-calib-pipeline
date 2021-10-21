@@ -18,6 +18,8 @@ Save the file , extract it locally, and `cd solution`. From now on, we assume th
 
 ### Set up kubernetes and containers
 
+In a terminal, use the following commands to set up the kubernetes cluster and run the containers in the pipeline.
+
 **1)** Start minikube
 
 `minikube start`
