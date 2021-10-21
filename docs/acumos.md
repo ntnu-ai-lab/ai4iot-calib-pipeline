@@ -6,7 +6,7 @@
 
 ### Download solution from Acumos
 
-Go to the visual studio of the AI4EU Experiments and open the *ai4iot-calib* solution. Then click on Deploy -> Deploy to Local.
+Go to the Design Studio of the AI4EU Experiments and open the *ai4iot-calib* solution. Then click on Deploy -> Deploy to Local.
 
 ![image](https://user-images.githubusercontent.com/45718165/137911279-88d2fb1f-442a-4d25-8cbf-4b01c3ee3084.png)
 
