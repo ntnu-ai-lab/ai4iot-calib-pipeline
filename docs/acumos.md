@@ -1,5 +1,7 @@
 ### Prerequisites
 
+In this tutorial, we use minikube as the tool to set up a local Kubernetes environment, although there are several other possibilities.
+
 - Install Docker: https://docs.docker.com/get-docker/
 - Install minikube: https://minikube.sigs.k8s.io/docs/start/
 - Install Kubernetes: https://kubernetes.io/docs/tasks/tools/
