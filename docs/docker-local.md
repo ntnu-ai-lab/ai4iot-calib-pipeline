@@ -47,4 +47,6 @@ Orchestrator is the term to the script which connects to all running modules and
 
 `./run-orchestrator.sh`
 
-The output of the pipeline is available through the webui available at the address `localhost:8000`
+The output of the pipeline is available through the webui available at the address `localhost:8000`, as in the image below.
+
+![image](https://user-images.githubusercontent.com/45718165/138251559-a64c8738-4ee0-4b78-a6d2-fede18e0ec0f.png)
