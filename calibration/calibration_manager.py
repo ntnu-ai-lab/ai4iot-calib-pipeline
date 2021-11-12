@@ -1,7 +1,9 @@
 import joblib
 
+
 class CalibrationManager():
     def __init__(self):
+        ## TODO: Change to path for docker container, chanegd temporarily for testing
         self.model_pm25 = joblib.load('../data/model_elgeseter_pm25.pkl')
         self.model_pm10 = joblib.load('../data/model_elgeseter_pm10.pkl')
 

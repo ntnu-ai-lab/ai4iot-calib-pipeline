@@ -10,11 +10,8 @@ from datetime import datetime
 import pytz
 
 import plotly
-import plotly.graph_objs as go
 import plotly.express as px
 
-import numpy as np
-import pandas as pd
 import json
 
 from collections import deque
@@ -30,60 +27,74 @@ class CalibApp():
     def __init__(self):
         self.app = Flask('calib')
         self.app.add_url_rule('/', 'index', self.index)
+        self.app.add_url_rule('/sensor/<name>', 'elgeseter', self.plot_sensor)
 
-        self.pm25 = 0
-        self.pm10 = 0
-        self.update_time = 0
+        self.data = {'Elgeseter': None,
+                     'Torget': None}
 
-        self.history_pm25 = deque(maxlen=history_length)
-        self.history_pm10 = deque(maxlen=history_length)
-        self.history_raw_pm25 = deque(maxlen=history_length)
-        self.history_raw_pm10 = deque(maxlen=history_length)
-        self.history_time_index = deque(maxlen=history_length)
+        self.data['Elgeseter'] = {'pm25': 0,
+                                  'pm10': 0,
+                                  'update_time': 0,
+                                  'history_pm25': deque(maxlen=history_length),
+                                  'history_pm10': deque(maxlen=history_length),
+                                  'history_raw_pm25': deque(maxlen=history_length),
+                                  'history_raw_pm10': deque(maxlen=history_length),
+                                  'history_time_index': deque(maxlen=history_length)}
+
+        self.data['Torget'] = {'pm25': 0,
+                               'pm10': 0,
+                               'update_time': 0,
+                               'history_pm25': deque(maxlen=history_length),
+                               'history_pm10': deque(maxlen=history_length),
+                               'history_raw_pm25': deque(maxlen=history_length),
+                               'history_raw_pm10': deque(maxlen=history_length),
+                               'history_time_index': deque(maxlen=history_length)}
 
     def index(self):
-        if not self.history_time_index:  # If history is empty return warning html
+        return render_template('index.html')
+
+    def plot_sensor(self, name):
+        name = name.capitalize()
+        if not self.data[name]['history_time_index']:  # If history is empty do not plot anything yet
             bar_pm25 = None
             bar_pm10 = None
         else:  # Otherwise just plot whatever we have received
-            bar_pm25, bar_pm10 = self.create_plot()
+            bar_pm25, bar_pm10 = self.create_plot(name)
 
-        return render_template('index.html', calib_pm25=self.pm25, calib_pm10=self.pm10, update_time=self.update_time, plot_pm25=bar_pm25, plot_pm10=bar_pm10)
+        return render_template('sensor.html', sensor=name, plot_pm25=bar_pm25, plot_pm10=bar_pm10)
 
     def get_app(self):
 
         return self.app
 
-    def set_values(self, new_pm25, new_pm10, raw_pm25, raw_pm10):
-        self.pm25 = new_pm25
-        self.pm10 = new_pm10
+    def set_values(self, sensor_name, new_pm25, new_pm10, raw_pm25, raw_pm10):
+        self.data[sensor_name]['pm25'] = new_pm25
+        self.data[sensor_name]['pm10'] = new_pm10
 
         now = datetime.now(tz)
-        self.update_time = now.strftime("%H")
+        self.data[sensor_name]['update_time'] = now.strftime("%H")
 
-        self.history_pm25.append(new_pm25)
-        self.history_pm10.append(new_pm10)
-        self.history_raw_pm25.append(raw_pm25)
-        self.history_raw_pm10.append(raw_pm10)
-        self.history_time_index.append(self.update_time)
+        self.data[sensor_name]['history_pm25'].append(new_pm25)
+        self.data[sensor_name]['history_pm10'].append(new_pm10)
+        self.data[sensor_name]['history_raw_pm25'].append(raw_pm25)
+        self.data[sensor_name]['history_raw_pm10'].append(raw_pm10)
+        self.data[sensor_name]['history_time_index'].append(self.data[sensor_name]['update_time'])
 
-    def create_plot(self):
+    def create_plot(self, sensor_name):
 
         # Create plot for PM2.5 history
-        data_pm25 = px.line(y=[list(self.history_pm25), list(self.history_raw_pm25)],
-                            x=list(self.history_time_index),
-                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'},
-                            title='PM2.5 History')
+        data_pm25 = px.line(y=[list(self.data[sensor_name]['history_pm25']), list(self.data[sensor_name]['history_raw_pm25'])],
+                            x=list(self.data[sensor_name]['history_time_index']),
+                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'})
         data_pm25.data[1].name = 'Raw'
         data_pm25.data[0].name = 'Calibrated'
 
         graphJSON_pm25 = json.dumps(data_pm25, cls=plotly.utils.PlotlyJSONEncoder)
 
         # Create plot for PM10 history
-        data_pm10 = px.line(y=[list(self.history_pm10), list(self.history_raw_pm10)],
-                            x=list(self.history_time_index),
-                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'},
-                            title='PM10 History')
+        data_pm10 = px.line(y=[list(self.data[sensor_name]['history_pm10']), list(self.data[sensor_name]['history_raw_pm10'])],
+                            x=list(self.data[sensor_name]['history_time_index']),
+                            labels={'x': 'Time', 'y': 'Calibrated value', 'variable': 'Source'})
 
         data_pm10.data[1].name = 'Raw'
         data_pm10.data[0].name = 'Calibrated'
@@ -96,7 +107,8 @@ class CalibApp():
 class VisualizationServicer(visualization_pb2_grpc.VisualizationServicer):
 
     def set_values(self, request, context):
-        myapp.set_values(request.calibrated_pm25, request.calibrated_pm10, request.raw_data.pm25, request.raw_data.pm10)
+        for sample in request.data:
+            myapp.set_values(sample.sensor_name.capitalize(), sample.calibrated_pm25, sample.calibrated_pm10, sample.raw_pm25, sample.raw_pm10)
 
         context.set_details('No more data available')
         context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -115,11 +127,3 @@ visualization_pb2_grpc.add_VisualizationServicer_to_server(VisualizationServicer
 print("Starting server. Listening on port : " + str(port))
 server.add_insecure_port("[::]:{}".format(port))
 server.start()
-
-# try:
-#     while True:
-#         time.sleep(86400)
-# except KeyboardInterrupt:
-#     server.stop(0)
-
-#app.run()

@@ -40,7 +40,9 @@ visualization_stub = orchestrator_pb2_grpc.VisualizationStub(visualization_chann
 
 # Implements a scheduler to update the data at a fixed frequency.
 # For example, let's say that we want an update every hour at the minute 15 (01:15, 02:15, ..., 10:15, so on)
-schedule.every().hour.at(":15").do(update_data)
+#schedule.every().hour.at(":15").do(update_data)
+
+schedule.every(10).seconds.do(update_data)
 
 try:
     while True:

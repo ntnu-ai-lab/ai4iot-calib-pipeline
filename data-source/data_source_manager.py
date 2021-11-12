@@ -4,18 +4,23 @@ from api_clients.client_met import ClientMet
 
 
 class DataSourceManager():
-    def __init__(self, config):
+    def __init__(self, config, iot_sensors):
         self.config = config
         # Create api clients
         self.client_iot = ClientIot(token=config['iot_token'])
         self.client_met = ClientMet(client_id=config['met_id'])
         self.client_nilu = ClientNilu()
 
+        self.iot_sensors = iot_sensors
+
     def collect_sample(self):
-        # Device is hardcoded for Elgeseter
-        iot_data = self.client_iot.fetch_last_data(device='17dh0cf43jg89l',
-                                                   elements=['pm1','pm25','pm10','opc_temp','opc_hum'],
-                                                   mask=['pm1_iot','pm25_iot','pm10_iot','temp_iot','hum_iot'])
+        # Generalize to read from iot_sensors input
+        iot_data = {'Elgeseter': None,
+                    'Torget': None}
+
+        for sensor in self.iot_sensors:
+            iot_data[sensor] = self.client_iot.fetch_last_data(device=self.iot_sensors[sensor],elements=['pm1','pm25','pm10','opc_temp','opc_hum'],
+                                                       mask=['pm1_iot','pm25_iot','pm10_iot','temp_iot','hum_iot'])
 
         nilu_data = self.client_nilu.fetch_last_data(station='Elgeseter',
                                                      elements=['pm2.5', 'pm10'],

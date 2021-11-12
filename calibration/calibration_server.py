@@ -21,22 +21,27 @@ class CalibrationServicer(calibration_pb2_grpc.CalibrationServicer):
 
     def calibrate_sample(self, request, context):
 
-        sample = {'pm1': request.pm1,
-                  'pm25': request.pm25,
-                  'pm10': request.pm10,
-                  'air_temperature': request.air_temperature,
-                  'relative_humidity': request.relative_humidity,
-                  'precipitation': request.precipitation,
-                  'air_pressure': request.air_pressure,
-                  'wind_speed': request.wind_speed,
-                  'wind_direction': request.wind_direction}
+        response = calibration_pb2.CalibratedData()
 
-        response = calibration_pb2.CalibResponse()
+        for sensor_data in request.iot_data:
+            sample = {'pm1': sensor_data.pm1,
+                      'pm25': sensor_data.pm25,
+                      'pm10': sensor_data.pm10,
+                      'air_temperature': request.air_temperature,
+                      'relative_humidity': request.relative_humidity,
+                      'precipitation': request.precipitation,
+                      'air_pressure': request.air_pressure,
+                      'wind_speed': request.wind_speed,
+                      'wind_direction': request.wind_direction}
 
-        response.calibrated_pm25, response.calibrated_pm10 = self.manager.predict(np.array(list(sample.values())).reshape(1, -1))
+            sensor_response = response.data.add()
 
-        response.raw_data.pm25 = request.pm25
-        response.raw_data.pm10 = request.pm10
+            sensor_response.sensor_name = sensor_data.name
+            sensor_response.raw_pm1 = sensor_data.pm1
+            sensor_response.raw_pm25 = sensor_data.pm25
+            sensor_response.raw_pm10 = sensor_data.pm10
+
+            sensor_response.calibrated_pm25, sensor_response.calibrated_pm10 = self.manager.predict(np.array(list(sample.values())).reshape(1, -1))
 
         return response
 

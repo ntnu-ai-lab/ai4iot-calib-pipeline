@@ -48,9 +48,12 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         self.first_call = True
         self.throw_grpc_error = False
 
+        self.iot_sensors = {'Elgeseter': '17dh0cf43jg89l',
+                            'Torget': '2f3a11687f7a2j'}
+
     def init_config(self):
         config = readConfig('/config/.aqdata')
-        self.manager = DataSourceManager(config)
+        self.manager = DataSourceManager(config, self.iot_sensors)
 
         self.first_call = False
 
@@ -63,9 +66,16 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
 
         response = data_source_pb2.DataSample()
 
-        response.pm1 = data['pm1_iot']
-        response.pm25 = data['pm25_iot']
-        response.pm10 = data['pm10_iot']
+        print(data)
+
+        for sensor in self.iot_sensors:
+            sensor_info = response.iot_data.add()
+
+            sensor_info.name = sensor
+            sensor_info.pm1 = data[sensor]['pm1_iot']
+            sensor_info.pm25 = data[sensor]['pm25_iot']
+            sensor_info.pm10 = data[sensor]['pm10_iot']
+
         response.air_temperature = data['temperature']
         response.relative_humidity = data['humidity']
         response.precipitation = data['precipitation']
@@ -105,11 +115,11 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         #     return data_source_pb2.DataSample()
 
 
-shared_folder = os.getenv("SHARED_FOLDER_PATH")
-if shared_folder is not None:
-    print("Shared folder is:" + str(shared_folder))
-else:
-    print("Shared folder non existing")
+# shared_folder = os.getenv("SHARED_FOLDER_PATH")
+# if shared_folder is not None:
+#     print("Shared folder is:" + str(shared_folder))
+# else:
+#     print("Shared folder non existing")
 
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

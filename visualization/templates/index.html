@@ -3,33 +3,52 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 
 <html>
+  <head>
+    <style>
+      {
+          box-sizing: border-box;
+      }
+      /* Set additional styling options for the columns*/
+      .column {
+	  float: left;
+	  width: 50%;
+      }
+
+      .row:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+      }
+
+      .button {
+	  border: none;
+	  color: white;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	  margin: 4px 2px;
+	  cursor: pointer;
+      }
+
+      .button1 {background-color: #4CAF50;} /* Green */
+    </style>
+  </head>
+  
   <body>
-    <!-- <p> <b> Last update</b></p> -->
-    <!-- <p> {{ update_time }} </p> -->
-    <p> <b> Sensor location: </b> Elgeseter </p>
+    <h2> Choose which sensor to observe. Currently available: Elegseter or Torget.</h2>
 
-    <div class="chart" id="pm25_hist">
-      <script>
-	var graphs ={{plot_pm25 | safe}};
-	Plotly.plot('pm25_hist',graphs,{});
-      </script>
-    </div>
-
-    <div class="chart" id="pm10_hist">
-      <script>
-	var graphs ={{plot_pm10 | safe}};
-	Plotly.plot('pm10_hist',graphs,{});
-      </script>
-    </div>
+    <button class="button button1" onclick="window.location.href='/';">
+      Home
+    </button>
+    <button class="button button1" onclick="window.location.href='/sensor/elgeseter';">
+      Elgeseter
+    </button>
+    <button class="button button1" onclick="window.location.href='/sensor/torget';">
+      Torget
+    </button>
     
-    <!-- <script type="text/javascript"> -->
-    <!--   var print_check = {{ print_check }} -->
-    <!--   if ({{ print_check }} == '1'){ -->
-    <!-- 	  var graphs ={{graphJSON | safe}}; -->
-    <!-- 	  Plotly.plot('pm',graphs,{}); -->
-    <!--   } else { -->
-    <!-- 	  document.getElementById("empty-notify").innerHTML = "No data available yet"; -->
-    <!--   } -->
-    <!-- </script> -->
-<body>
+    
+  </body>
 <html>
