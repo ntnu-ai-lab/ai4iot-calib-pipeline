@@ -9,8 +9,6 @@ import data_source_pb2_grpc
 
 from data_source_manager import DataSourceManager
 
-import os
-
 port = 8061
 
 
@@ -51,9 +49,14 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         self.iot_sensors = {'Elgeseter': '17dh0cf43jg89l',
                             'Torget': '2f3a11687f7a2j'}
 
+        self.nilu_sensors = ['Torget']
+
     def init_config(self):
         config = readConfig('/config/.aqdata')
-        self.manager = DataSourceManager(config, self.iot_sensors)
+
+        self.manager = DataSourceManager(config=config,
+                                         iot_sensors=self.iot_sensors,
+                                         nilu_sensors=self.nilu_sensors)
 
         self.first_call = False
 
@@ -62,64 +65,31 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         if self.first_call:
             self.init_config()
 
-        data = self.manager.collect_sample()
+        try:
+            iot_data, met_data, nilu_data = self.manager.collect_sample()
+        except ValueError as e:
+            print("Got an exception", str(e))
+            raise ValueError(e)
 
         response = data_source_pb2.DataSample()
-
-        print(data)
 
         for sensor in self.iot_sensors:
             sensor_info = response.iot_data.add()
 
             sensor_info.name = sensor
-            sensor_info.pm1 = data[sensor]['pm1_iot']
-            sensor_info.pm25 = data[sensor]['pm25_iot']
-            sensor_info.pm10 = data[sensor]['pm10_iot']
+            sensor_info.pm1 = iot_data[sensor]['pm1_iot']
+            sensor_info.pm25 = iot_data[sensor]['pm25_iot']
+            sensor_info.pm10 = iot_data[sensor]['pm10_iot']
 
-        response.air_temperature = data['temperature']
-        response.relative_humidity = data['humidity']
-        response.precipitation = data['precipitation']
-        response.air_pressure = data['air_pressure']
-        response.wind_speed = data['wind_speed']
-        response.wind_direction = data['wind_direction']
+        response.air_temperature = met_data['temperature']
+        response.relative_humidity = met_data['humidity']
+        response.precipitation = met_data['precipitation']
+        response.air_pressure = met_data['air_pressure']
+        response.wind_speed = met_data['wind_speed']
+        response.wind_direction = met_data['wind_direction']
 
         return response
 
-        # if not self.throw_grpc_error:
-        #     data = self.manager.collect_sample()
-
-        #     response = data_source_pb2.DataSample()
-
-        #     response.pm1 = data['pm1_iot']
-        #     response.pm25 = data['pm25_iot']
-        #     response.pm10 = data['pm10_iot']
-        #     response.air_temperature = data['temperature']
-        #     response.relative_humidity = data['humidity']
-        #     response.precipitation = data['precipitation']
-        #     response.air_pressure = data['air_pressure']
-        #     response.wind_speed = data['wind_speed']
-        #     response.wind_direction = data['wind_direction']
-
-        #     self.throw_grpc_error = True
-
-        #     return response
-
-        # else:
-        #     # Testing grpc error handling (needed for AI4EU pipeline)
-        #     # TODO: adapt code to return error code after 1 data request (or decide how to do data managing otherwise)
-        #     context.set_details('No more data available')
-        #     context.set_code(grpc.StatusCode.NOT_FOUND)
-
-        #     self.throw_grpc_error = False
-
-        #     return data_source_pb2.DataSample()
-
-
-# shared_folder = os.getenv("SHARED_FOLDER_PATH")
-# if shared_folder is not None:
-#     print("Shared folder is:" + str(shared_folder))
-# else:
-#     print("Shared folder non existing")
 
 # create a grpc server :
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

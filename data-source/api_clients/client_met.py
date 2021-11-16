@@ -18,11 +18,14 @@ class ClientMet():
 
         data = self._request(params)
 
-        out_data = {}
+        out_data = dict.fromkeys(elements)
 
         for x in data[0]['observations']:
-            # out_data = out_data + (x['value'],)
             out_data[x['elementId']] = x['value']
+
+            # If any of the elements is None, it means that there is missing data and we throw an Exception
+        if None in out_data.values():
+            raise ValueError("Missing data for MET sensor " + source)
 
         if mask is None:
             pass

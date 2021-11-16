@@ -42,8 +42,8 @@ class ClientIot():
         end_time = current_time - (current_time % (3600 * 1000))
         start_time = end_time - 1 * 60 * 60 * 1000
 
-        end_time = current_time - (current_time % (3600*1000))
-        start_time = end_time-1*60*60*1000
+        end_time = current_time - (current_time % (3600 * 1000))
+        start_time = end_time - 1 * 60 * 60 * 1000
 
         # Fetch data for the previous hours. With the Span API this is done by defining start and end times.
         # Values must be in milisecond since epoch.
@@ -53,6 +53,10 @@ class ClientIot():
                                '/collections/17dh0cf43jg007/devices/{0}/data'.format(device),
                                params={"start": start_time,
                                        "end": end_time})
+
+        # If response is empty, sensor is down and there is no data. We throw an Exception
+        if len(resp) == 0:
+            raise ValueError("Missing data for IoT sensor " + device)
 
         data = {}
         for el in elements:
@@ -67,8 +71,10 @@ class ClientIot():
 
         out_data = {}
         for el in elements:
-            # out_data = out_data + (data[el].mean(),)
-            out_data[el] = data[el].mean()
+            if not data[el].size:
+                out_data[el] = None
+            else:
+                out_data[el] = data[el].mean()
 
         if mask is None:
             pass

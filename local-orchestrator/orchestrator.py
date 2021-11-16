@@ -10,14 +10,19 @@ import schedule
 def update_data():
     try:
         while True:
+            print('Start procedure')
             # Fetch data sample from external APIs
             data_sample = data_source_stub.request_update(orchestrator_pb2.Empty())
 
+            print('Sampled data')
             # Call pre-trained calibration module
             calib_data = calibration_stub.calibrate_sample(data_sample)
 
+            print('Calibrated data')
             # Update visualization output
             visualization_stub.set_values(calib_data)
+
+            print('Leaving')
 
     except Exception as e:
         print("Got an exception ", str(e))
@@ -38,16 +43,26 @@ calibration_stub = orchestrator_pb2_grpc.CalibrationStub(calibration_channel)
 visualization_channel = grpc.insecure_channel("localhost:8062")
 visualization_stub = orchestrator_pb2_grpc.VisualizationStub(visualization_channel)
 
-# Implements a scheduler to update the data at a fixed frequency.
-# For example, let's say that we want an update every hour at the minute 15 (01:15, 02:15, ..., 10:15, so on)
-#schedule.every().hour.at(":15").do(update_data)
+## Implements a scheduler to update the data at a fixed frequency.
+## For example, let's say that we want an update every hour at the minute 15 (01:15, 02:15, ..., 10:15, so on)
+# schedule.every().hour.at(":15").do(update_data)
 
-schedule.every(10).seconds.do(update_data)
+## Or, do an update every 10 seconds
+# schedule.every(10).seconds.do(update_data)
 
+## If a scheduler is desired, the following block needs to be uncommented
+##################
+# try:
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+
+# except Exception as e:
+#     print("Got an exception ", str(e))
+###################
+
+# If one doesn't need/want to run frequent calls, just comment all the scheduling and call the method to update the data (i.e., run the pipeline) as in the following line
 try:
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
+    update_data()
 except Exception as e:
     print("Got an exception ", str(e))
