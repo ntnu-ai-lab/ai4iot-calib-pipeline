@@ -8,7 +8,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ### Download solution from Acumos
 
-Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below).
+Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.
 
 ![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)
 
@@ -81,7 +81,7 @@ The address where the visualization is published is available with the command:
 
 `minikube -n <namespace_id> service --url visualization1webui`
 
-Finally, open the respective address in any browser and the output of the pipeline should be visible as in the image below, with an indication of which sensor is being shown and plots for PM2.5 and PM10 measurements for the past 12 hours, both before and after the calibration procedure.
+Finally, open the respective address in any browser and you'll find a siple webpage presenting the output of the pipeline for the available sensors. Currently, only `Elgeseter` and `Torget`. Navigate through the buttons on the webpage to visualize either of them. The output includes plots for PM2.5 and PM10 measurements for the past 12 hours, both before and after the calibration procedure.
 
 ![image](https://user-images.githubusercontent.com/45718165/138251559-a64c8738-4ee0-4b78-a6d2-fede18e0ec0f.png)
 
