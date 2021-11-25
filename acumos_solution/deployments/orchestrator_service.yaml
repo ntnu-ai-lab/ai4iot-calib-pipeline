@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestrator
+spec:
+  ports:
+  - name: mc-api
+    nodePort: 30004
+    port: 30004
+    targetPort: 8061
+  selector:
+    app: orchestrator
+  type: NodePort

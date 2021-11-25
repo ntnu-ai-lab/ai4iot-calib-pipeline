@@ -1,0 +1,22 @@
+//Define the used version of proto
+syntax = "proto3";
+
+message CalibratedSample {
+  float raw_pm1 = 1;
+  float raw_pm25 = 2;
+  float raw_pm10 = 3;
+  float calibrated_pm25 = 4;
+  float calibrated_pm10 = 5;
+  string sensor_name = 6;
+}
+
+message CalibratedData {
+  repeated CalibratedSample data = 1;
+}
+
+message Empty {
+}
+
+service Visualization {
+  rpc set_values(CalibratedData) returns (Empty);
+}
