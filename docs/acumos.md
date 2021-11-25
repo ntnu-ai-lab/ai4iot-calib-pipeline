@@ -8,19 +8,25 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ### Download solution from Acumos
 
-Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.
+**Note: This approach is not currently generalizable due to an update on the platform orchestrator that is not fully compatible with previous container specification from the developer team. Briefly, the orchestrator is not properly terminated once a container returns a gRPC status error code, as defined in the [platform documentation](https://github.com/ai4eu/tutorials/blob/master/Container_Specification/ai4eu_container_specification.pdf). The issue has been reported and will be fixed.**
 
-![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)
+**As a workaround, a version of the solution with a workaround is available in this repository under the folder `acumos_solution` and it is assumed that the user is working within this folder.**
 
-Then click on Deploy -> Deploy to Local.
+~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
 
-![image](https://user-images.githubusercontent.com/45718165/137911279-88d2fb1f-442a-4d25-8cbf-4b01c3ee3084.png)
+~~![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)~~
 
-And download the solution.zip exported by the platform.
+~~Then click on Deploy -> Deploy to Local.~~
 
-![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)
+~~![image](https://user-images.githubusercontent.com/45718165/137911279-88d2fb1f-442a-4d25-8cbf-4b01c3ee3084.png)~~
 
-Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.
+~~And download the solution.zip exported by the platform.~~
+
+~~![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)~~
+
+~~Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.~~
+
+## 
 
 ### Set up kubernetes and containers
 
