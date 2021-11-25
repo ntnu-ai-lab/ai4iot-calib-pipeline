@@ -34,4 +34,4 @@ Orchestrator is the term to the script which connects to all running modules and
 
 The output of the pipeline is available through the webui available at the address `localhost:8000`. Open it in any browser and you'll find a siple webpage presenting the output of the pipeline for the available sensors. Currently, only `Elgeseter` and `Torget`. Navigate through the buttons on the webpage to visualize either of them. The output includes plots for PM2.5 and PM10 measurements for the past 12 hours, both before and after the calibration procedure.
 
-![image](https://user-images.githubusercontent.com/45718165/138251559-a64c8738-4ee0-4b78-a6d2-fede18e0ec0f.png)
+![image](https://user-images.githubusercontent.com/45718165/143457667-9fba09d4-b0b3-494f-ab63-4378e5d91c63.png)
