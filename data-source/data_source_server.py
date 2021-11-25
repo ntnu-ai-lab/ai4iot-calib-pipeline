@@ -49,7 +49,7 @@ class DataSourceServicer(data_source_pb2_grpc.AQDataSourceServicer):
         self.iot_sensors = {'Elgeseter': '17dh0cf43jg89l',
                             'Torget': '2f3a11687f7a2j'}
 
-        self.nilu_sensors = ['Torget']
+        self.nilu_sensors = []
 
     def init_config(self):
         config = readConfig('/config/.aqdata')

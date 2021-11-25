@@ -1,0 +1,11 @@
+protobuf>=3.5.0
+grpcio-tools
+requests
+numpy
+pandas
+scikit-learn==0.23.2
+gunicorn
+flask
+pytz
+plotly
+schedule

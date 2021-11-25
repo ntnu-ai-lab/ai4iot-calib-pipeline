@@ -21,4 +21,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8062
 
-CMD gunicorn -b :8062 visualization_server:calib_app
+CMD gunicorn -t 0 -b :8062 visualization_server:calib_app

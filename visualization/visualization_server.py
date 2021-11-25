@@ -50,18 +50,18 @@ class CalibApp():
                                'history_raw_pm10': deque(maxlen=history_length),
                                'history_time_index': deque(maxlen=history_length)}
 
+        self.plots = {'Elgeseter_pm25': None,
+                      'Elgeseter_pm10': None,
+                      'Torget_pm25': None,
+                      'Torget_pm10': None}
+
     def index(self):
         return render_template('index.html')
 
     def plot_sensor(self, name):
         name = name.capitalize()
-        if not self.data[name]['history_time_index']:  # If history is empty do not plot anything yet
-            bar_pm25 = None
-            bar_pm10 = None
-        else:  # Otherwise just plot whatever we have received
-            bar_pm25, bar_pm10 = self.create_plot(name)
 
-        return render_template('sensor.html', sensor=name, plot_pm25=bar_pm25, plot_pm10=bar_pm10)
+        return render_template('sensor.html', sensor=name, plot_pm25=self.plots[name + '_pm25'], plot_pm10=self.plots[name + '_pm10'])
 
     def get_app(self):
 
@@ -79,6 +79,8 @@ class CalibApp():
         self.data[sensor_name]['history_raw_pm25'].append(raw_pm25)
         self.data[sensor_name]['history_raw_pm10'].append(raw_pm10)
         self.data[sensor_name]['history_time_index'].append(self.data[sensor_name]['update_time'])
+
+        self.plots[sensor_name + '_pm25'], self.plots[sensor_name + '_pm10'] = self.create_plot(sensor_name.capitalize())
 
     def create_plot(self, sensor_name):
 
