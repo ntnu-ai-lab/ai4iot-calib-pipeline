@@ -2,6 +2,8 @@
 
 - Install Docker: https://docs.docker.com/get-docker/
 
+- Install the schedule package: `pip3 install schedule`
+
 ### Container set up
 
 **1)** Pull containers from Docker Hub
