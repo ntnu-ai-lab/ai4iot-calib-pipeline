@@ -8,7 +8,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ### Download solution from Acumos
 
-Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.
+~~Go to~~ the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.
 
 ![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)
 
@@ -20,7 +20,7 @@ And download the solution.zip exported by the platform.
 
 ![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)
 
-Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.
+Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.~~
 
 ### Set up kubernetes and containers
 
