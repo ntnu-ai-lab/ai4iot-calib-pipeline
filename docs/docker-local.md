@@ -2,6 +2,8 @@
 
 - Install Docker: https://docs.docker.com/get-docker/
 
+- Install needed python packages: `pip3 install -r requirements.txt`
+
 ### Data Source
 
 **1)** Go to folder and build the docker container.
