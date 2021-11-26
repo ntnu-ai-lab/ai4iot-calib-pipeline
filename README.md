@@ -1,7 +1,7 @@
 # Air quality low cost sensor calibration
 
-This repository implements modules towards the pipeline for the AI4IoT pilot, using the Acumos infrastructure from the AI4EU platform.
-Currently, there are three modules which, together, form a pipeline for the calibration of low-cost sensors. The modules are: a `data source` which fetches data from several external APIs and concatenates them, a `calibration` which predicts the true value at the sensor location and a simple `visualization` module which implements a web interface to analyse the output of the calibration procedure.
+This repository includes the modules for a use case of pipeline deployment based on the AI4EU Experiments platform. The use case is calibration of IoT devices, in this case air quality sensors.
+The pipeline is broken down into three three modules which follow a generalizable data flow for different types of architectures with IoT devices. The modules are: a `data source` which fetches data from several external APIs and concatenates them, a `calibration` which predicts the true value at the sensor location and a simple `visualization` module which implements a web interface to analyse the output of the calibration procedure.
 
 The modules are prepared to be deployed through the AI4EU Experiments Platform. This means that they are containerized and are ran in Docker containers, expose gRPC services and expects input messages as protobufs.
 
