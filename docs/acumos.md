@@ -10,7 +10,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 **Note: This approach is not currently generalizable due to an update on the platform orchestrator that is not fully compatible with previous container specification from the developer team. Briefly, the orchestrator is not properly terminated once a container returns a gRPC status error code, as defined in the [platform documentation](https://github.com/ai4eu/tutorials/blob/master/Container_Specification/ai4eu_container_specification.pdf). The issue has been reported and will be fixed.**
 
-**As a workaround, a version of the solution with a workaround is available in this repository under the folder `acumos_solution` and it is assumed that the user is working within this folder.**
+**As a workaround, a version of the solution with a manual fix is available in this repository under the folder `acumos_solution`. Follow the following section to set it up.**
 
 ~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
 
@@ -26,7 +26,11 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ~~Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.~~
 
-## 
+### Use pre-downloaded solution from Acumos
+
+In a terminal, move into the `acumos_solution` folder and install the needed requirements for orchestration:
+
+`pip3 install -r requirements.txt`
 
 ### Set up kubernetes and containers
 
@@ -44,9 +48,9 @@ Ex.: `kubectl create namespace ai4iot`
 
 **3)** Run deployment script
 
-`python kubernetes-client-script.py -n <namespace_id>`
+`python3 kubernetes-client-script.py -n <namespace_id>`
 
-Ex.: `python kubernetes-client-script.py -n ai4iot`
+Ex.: `python3 kubernetes-client-script.py -n ai4iot`
 
 Note the info printed by this script, as in the example below, the command for the orchestrator client will be used in a further step.
 
@@ -73,12 +77,12 @@ It is expected that the AI4EU Experiments offers this functionality in future ve
 Here, we make use of the command outputed by the `kubernetes-client-script`. We present two options, first if one wants to run the pipeline only a single time:  
 `python orchestrator_client/orchestrator_client.py --endpoint=<node_ip>:<orchestrator_port> --basepath=./`
 
-Ex.: `python orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
+Ex.: `python3 orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
 
 However, in our particular case, we need the calibration output to be updated every hour, since all the input data is also updated with that frequency. For that we can implement a chronjob. For now and for illustraton purposes, the most simple is to run the orchestrator client with a fixed frequency. For that we use the command `watch`, where <n_seconds> is the number of seconds between each call:  
 `watch -n <n_seconds> python orchestrator_client/orchestrator_client.py --endpoint=<node_ip>:<orchestrator_port> --basepath=./`
 
-Ex. for every hour: `watch -n 3600 python orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
+Ex. for every hour: `watch -n 3600 python3 orchestrator_client/orchestrator_client.py --endpoint=192.168.49.2:30004 --basepath=./`
 
 **2)** Visualize the output
 
