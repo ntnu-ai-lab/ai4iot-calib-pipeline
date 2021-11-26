@@ -10,7 +10,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 **Note: This approach is not currently generalizable due to an update on the platform orchestrator that is not fully compatible with previous container specification from the developer team. Briefly, the orchestrator is not properly terminated once a container returns a gRPC status error code, as defined in the [platform documentation](https://github.com/ai4eu/tutorials/blob/master/Container_Specification/ai4eu_container_specification.pdf). The issue has been reported and will be fixed.**
 
-**As a workaround, a version of the solution with a manual fix is available in this repository under the folder `acumos_solution`. Follow the following section to set it up.**
+**As a workaround, a version of the solution with a manual fix is available in this repository under the folder `acumos_solution`. Follow the following section** ***Use pre-downloaded solution from Acumos*** **to set it up.**
 
 ~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *ai4iot-calib* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
 
