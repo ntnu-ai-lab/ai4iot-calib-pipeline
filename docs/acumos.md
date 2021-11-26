@@ -24,7 +24,11 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ~~![image](https://user-images.githubusercontent.com/45718165/137911369-dcd0ab85-5362-403d-9bb4-89c2e984333c.png)~~
 
-~~Save the file , extract it locally, and `cd solution`. From now on, we assume the user is working within the solution folder.~~
+~~Save the file , extract it locally, and move into the extracted folder with `cd solution`. From now on, we assume the user is working within the solution folder.~~
+
+~~Install the package requirements for the orchestration:~~
+
+~~`pip3 install -r requirements.txt`~~
 
 ### Use pre-downloaded solution from Acumos
 
