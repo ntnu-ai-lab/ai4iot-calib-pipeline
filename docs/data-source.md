@@ -22,21 +22,26 @@ Low-cost sensor data is not, at the moment, publicly available but expected to b
 
 The Data Source module exposes the *request_update* service. It is the entry point for the pipeline and, therefore, receives an Empty message according to the container specification of the AI4EU platform. The structure of the messages and service are as follows.
 
-            message DataSample {
+            message IoTSample {
               float pm1 = 1;
               float pm25 = 2;
               float pm10 = 3;
-              float air_temperature = 4;
-              float relative_humidity = 5;
-              float precipitation = 6;
-              float air_pressure = 7;
-              float wind_speed = 8;
-              float wind_direction = 9;
+              string name = 4;
+            }
+
+            message DataSample {
+              repeated IoTSample iot_data = 1;
+              float air_temperature = 2;
+              float relative_humidity = 3;
+              float precipitation = 4;
+              float air_pressure = 5;
+              float wind_speed = 6;
+              float wind_direction = 7;
             }
 
             message Empty {
             }
-            
+
             service AQDataSource {
               rpc request_update(Empty) returns (DataSample);
             }
