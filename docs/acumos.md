@@ -14,7 +14,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 ~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *AI4IoT-Calibration* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
 
-~~![image](https://user-images.githubusercontent.com/45718165/138292019-259d04ef-5f38-4ba8-a9e1-704a6e7e95dd.png)~~
+~~![image](https://user-images.githubusercontent.com/45718165/144255264-a7d82db2-0c7c-4d6c-b07d-2f2212b72ca5.png)~~
 
 ~~Then click on Deploy -> Deploy to Local.~~
 
