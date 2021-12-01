@@ -12,7 +12,7 @@ In this illustrative tutorial, we use minikube as the tool to set up a local Kub
 
 **As a workaround, a version of the solution with a manual fix is available in this repository under the folder `acumos_solution`. Follow the following section** ***Use pre-downloaded solution from Acumos*** **to set it up.**
 
-~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the *AI4IoT-Calibration* solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
+~~Go to the Design Studio of the [AI4EU Experiments](https://aiexp.ai4europe.eu/#/home) and open the [*AI4IoT-Calibration*](https://aiexp.ai4europe.eu/#/marketSolutions?solutionId=0fbc7cc0-843a-489b-bab1-40e4d2700680&revisionId=478028bb-1c58-4641-9bc0-eba716119aec) solution. It is found on the Solution tab on the left side (figure below). Make sure to use the newest version of the solution.~~
 
 ~~![image](https://user-images.githubusercontent.com/45718165/144255264-a7d82db2-0c7c-4d6c-b07d-2f2212b72ca5.png)~~
 
